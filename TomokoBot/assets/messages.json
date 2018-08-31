@@ -1,0 +1,5 @@
+{
+    "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "Ehm, d-do I know y-you?", "=^_^=", "I can do this... He- NO! I CAN'T DO IT!", "H-Hi!"],
+    "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Iek! Oh, i-it's j-just you, Teitoku. I was a b-bit scared.", "T-Teitoku? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, Teitoku"],
+    "noperm":"Sorry, $user, you don't have the required permission to run `$command`.\nIf you think that this is an error, you may contact the server owner"
+}
