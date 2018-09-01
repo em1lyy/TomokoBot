@@ -3,8 +3,8 @@ Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
 
 ### General Information  
 Written in: `JavaScript`  
-Libraries used: `Eris` (*more are planned*)  
-Function count: Currently 0, lol  
+Libraries used: `Eris` `winston` (*planned: `nekos.life API`*)  
+Function count: Currently 6, lol (At least I think so, I think I am wrong lol)  
 Newest version: `v0.0.0`  
 Developers:  
 * Jonas Jaguar  
