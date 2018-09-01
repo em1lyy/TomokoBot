@@ -1,0 +1,43 @@
+{
+    "help": {
+        "title": "Tomoko's Help",
+        "description": "O-Oh, you need some h-help, here are s-some of my f-features:",
+        "fields": [
+            {
+                "name": ":star2: Core commands",
+                "value": "`help` `status` `invite` `aboutme` `support` `vote` `testperm`"
+            },
+            {
+                "name": ":musical_note: Music commands",
+                "value": "`play` `pause` `stop` `skip` `forceskip` `join` `voicequote` `queue` `repeat` `restartsong` `shuffle` `volume`"
+            },
+            {
+                "name": ":speech_balloon: Action commands",
+                "value": "`pat` `hug` `kiss` `slap` `bite` `bloodsuck` `tickle` `holdhands` `smile` `stare` `cuddle` `blush` `sleepy` `dance` `cry` `meow` `eat` `poke` `smug` `baka` `feed` `neko` `nekogif` `foxgirl` `highfive` `kemonomimi`"
+            },
+            {
+                "name": ":moneybag: Currency commands",
+                "value": "`balance` `daily` `gamble` `transfer` `leaderboard` `loot`"
+            },
+            {
+                "name": ":space_invader: Fun commands",
+                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `character` `rps`"
+            },
+            {
+                "name": ":oncoming_police_car: Moderation commands",
+                "value": "`kick` `ban` `unban` `prune` `prunemsg` `mute` `unmute`"
+            },
+            {
+                "name": ":tools: Utility commands",
+                "value": "`remindme` `birthday` `time` `wikipedia` `choose` `weather`"
+            },
+            {
+                "name": ":handshake: Support",
+                "value": "If y-you need further S-Support, please j-join [my Discord Server](https://discord.gg/mhmERk8)"
+            }
+        ]
+    },
+    "commands": {
+        
+    }
+}

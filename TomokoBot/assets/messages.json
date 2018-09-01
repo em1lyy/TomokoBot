@@ -1,5 +1,9 @@
 {
     "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "Ehm, d-do I know y-you?", "=^_^=", "I can do this... He- NO! I CAN'T DO IT!", "H-Hi!"],
     "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Iek! Oh, i-it's j-just you, Teitoku. I was a b-bit scared.", "T-Teitoku? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, Teitoku"],
-    "noperm":"Sorry, $user, you don't have the required permission to run `$command`.\nIf you think that this is an error, you may contact the server owner"
+    "noperm":"S-Sorry $user, but you d-don't have the required p-permission to run `$command`.\nIf you t-think that this is an error, you m-may contact the s-server owner",
+    "playing":["with my code", "with you", "watching anime", "with your ❤", "nothing", "with myself", "RealLife.exe", "Super Mario Bros.", "reading manga", "the piano"],
+    "wrongargs":"Sorry $user, but t-that's not h-how you use this c-command.\nYou m-may use `*help $command` to get more information o-on how to u-use the c-command.",
+    "cooldown":"P-Please don't call m-me so fast, I m-might get a b-burnout",
+    "everyoneWarn":"Don't u-use @ everyone o-or @ here, $user! J-Just don't d-do that! I-It is v-very bad!"
 }
