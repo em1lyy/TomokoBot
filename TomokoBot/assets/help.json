@@ -5,11 +5,11 @@
         "fields": [
             {
                 "name": ":star2: Core commands",
-                "value": "`help` `status` `invite` `aboutme` `support` `vote` `testperm`"
+                "value": "`help` `status` `invite` `aboutme` `support` `vote` `checkvote` `testperm`"
             },
             {
                 "name": ":musical_note: Music commands",
-                "value": "`play` `pause` `stop` `skip` `forceskip` `join` `voicequote` `queue` `repeat` `restartsong` `shuffle` `volume`"
+                "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume`"
             },
             {
                 "name": ":speech_balloon: Action commands",
@@ -21,7 +21,7 @@
             },
             {
                 "name": ":space_invader: Fun commands",
-                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `character` `rps`"
+                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
             },
             {
                 "name": ":oncoming_police_car: Moderation commands",
@@ -33,11 +33,87 @@
             },
             {
                 "name": ":handshake: Support",
-                "value": "If y-you need further S-Support, please j-join [my Discord Server](https://discord.gg/mhmERk8)"
+                "value": "If y-you need further S-Support, please j-join [my Discord Server](https://discord.gg/EK9F28B).\nFor m-more information about a c-command, u-use `help <command>`. B-Before commands, a-always set a `*`."
             }
         ]
     },
     "commands": {
-        
-    }
+        "help": {
+            "usage": "help [command]",
+            "description": "I-If `command` argument s-specified:\nGet help f-for a command.\nIf h-no `command` a-argument specified:\nL-List all aviable c-commands."
+        },
+        "status": {
+            "usage": "status",
+            "description": "Shows m-my current status."
+        },
+        "invite": {
+            "usage": "invite",
+            "description": "Sends y-you an invite w-which you can use t-to invite me to your server."
+        },
+        "aboutme": {
+            "usage": "aboutme",
+            "description": "Shows s-some information a-about me."
+        },
+        "support": {
+            "usage": "support",
+            "description": "S-Sends an invite t-to my official D-Discord server."
+        },
+        "vote": {
+            "usage": "vote",
+            "description": "Sends a l-link where you c-can vote for m-me :smiley:"
+        },
+        "checkvote": {
+            "usage": "checkvote",
+            "description": "Checks i-if you v-voted for me a-and gives you a r-role on my official D-Discord Server if y-you did."
+        },
+        "testperm": {
+            "usage": "testperm",
+            "description": "A l-little command used f-for some testing.\nY-You can use i-it to check whether I a-am onine or n-not."
+        },
+        "play": {
+            "usage": "play <subcommand> <music>",
+            "description": "A-Add music t-to the queue.\n`play yturl <URL>`: A-Adds the URL `URL` t-to the queue. T-This m-must be a direct Y-YouTube l-link (e.g. youtube.com o-or youtu.be)"
+        },
+        "pause": {
+            "usage": "pause",
+            "description": "P-Pause/Resume the c-current track."
+        },
+        "stop": {
+            "usage": "stop",
+            "description": "I-I'll stop the c-currently p-playing music and leave t-the channel."
+        },
+        "skip": {
+            "usage": "skip",
+            "description": "S-Starts a skip v-voting."
+        },
+        "forceskip": {
+            "usage": "forceskip",
+            "description": "F-Force-skips the current t-track."
+        },
+        "join": {
+            "usage": "join",
+            "description": "I-I'll j-join your v-voice channel a-and initialize m-my music p-player."
+        },
+        "queue": {
+            "usage": "queue",
+            "description": "L-Lists the c-current m-music queue"
+        },
+        "repeat": {
+            "usage": "repeat <mode>",
+            "description": "Sets the r-repeat mode.\nT-The argument `mode` c-can be:\n`song`: Repeats t-the current s-song.\n`queue`: R-Repeats the current q-queue\n`off`: T-Turns repeating o-off."
+        },
+        "restartsong": {
+            "usage": "restartsong",
+            "description": "I-I'll r-restart the c-current song."
+        },
+        "shuffle": {
+            "usage": "shuffle",
+            "description": "S-Switches b-between shuffle a-and noshuffle mode."
+        },
+        "volume": {
+            "usage": "volume <vol>",
+            "description": "Sets t-the volume.\n`vol` s-should be a n-number, e.g. `0.5`, `1.0`, `1.2`..."
+        }
+    },
+    "commandsWithHelp": ["help", "status", "invite", "aboutme", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume"]
 }

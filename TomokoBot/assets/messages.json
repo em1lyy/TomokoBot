@@ -1,9 +1,16 @@
 {
-    "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "Ehm, d-do I know y-you?", "=^_^=", "I can do this... He- NO! I CAN'T DO IT!", "H-Hi!"],
-    "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Iek! Oh, i-it's j-just you, Teitoku. I was a b-bit scared.", "T-Teitoku? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, Teitoku"],
+    "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "Ehm, d-do I know y-you?", "=^_^=", "H-Hi!"],
+    "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Eek! Oh, i-it's j-just you, $user. I was a b-bit scared.", "$user? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, $user"],
     "noperm":"S-Sorry $user, but you d-don't have the required p-permission to run `$command`.\nIf you t-think that this is an error, you m-may contact the s-server owner",
     "playing":["with my code", "with you", "watching anime", "with your ❤", "nothing", "with myself", "RealLife.exe", "Super Mario Bros.", "reading manga", "the piano"],
     "wrongargs":"Sorry $user, but t-that's not h-how you use this c-command.\nYou m-may use `*help $command` to get more information o-on how to u-use the c-command.",
+    "subcmd":"S-Sorry $user, b-but you need to s-specify a sub-command in order t-to use `$command`.\nYou m-may try `*help $command` to get a l-list of sub-commands.",
     "cooldown":"P-Please don't call m-me so fast, I m-might get a b-burnout",
-    "everyoneWarn":"Don't u-use @ everyone o-or @ here, $user! J-Just don't d-do that! I-It is v-very bad!"
+    "everyoneWarn":"Don't u-use @ everyone o-or @ here, $user! J-Just don't d-do that! I-It is v-very bad!",
+    "invite":"O-Oh, you w-want me in y-your guild, $user?\nN-No problem, j-just click the l-link below:\n[Invite me to your guild](https://is.gd/tomoko_bot)",
+    "aboutme_desc":"W-What? Y-You want to k-know something a-about me, $user? O-Okay, a-as you w-wish.",
+    "aboutme_fields":[{"name":":pushpin: Basic Information", "value":"I a-am Tomoko, I am 16 y-years old a-and 1.62 meters t-tall.\nMy n-name is Japanese for \"knowing child\" a-and written like t-that: 知子.\nMy weight is 49 kg."}, {"name":":pushpin: Insights", "value":"I am w-written in JavaScript/Node.js a-and use t-the following l-libs: `Eris`, `winston`, `AniList API` a-and `nekos.life API`."}, {"name":":pushpin: Personality", "value":"A-As you m-may have n-noticed, I am v-very shy, at l-least my creator, J-Jonas Jaguar, says so."}, {"name":":pushpin: Developers", "value":"O-Oh, you may a-ask yourself who t-this Jonas Jaguar i-is, so let m-me tell you.\nHe's a h-hobbyist programmer and u-usually codes i-in Python, C/C++, Java and JavaScript, but he also s-sometimes uses bash, QML a-and C#."}, {"name":":pushpin: That's it", "value":"That's b-basically it, I h-hope you w-weren't bored b-by my s-story."}],
+    "weebShHint":"S-Sorry $user, the c-command `$command` is not a-aviable yet, because I currently h-haven't gotten access t-to the Weeb.sh API. Maybe in t-the near future I'll get a-access, so p-please wait a bit.",
+    "support":"Y-You need further help w-with me, $user?\nN-No problem, just j-join my [official Discord Server](https://discord.gg/EK9F28B)",
+    "vote":"I'm sorry $user, b-but I'm currently **not registered** on Discord B-Bot List"
 }
