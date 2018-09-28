@@ -157,7 +157,7 @@ bot.registerCommand("status", (message, args) => {
         });
         var musicStatus = "**not playing** any music.";
         if (musicGuilds.has(message.member.guild.id))
-            musicStatus = "playing **" + musicGuilds.get(message.member.guild.id).queue[0].title + "**";
+            musicStatus = "playing **" + musicGuilds.get(message.member.guild.id).queue[0].title + "**.";
         bot.createMessage(message.channel.id, {
                                                 "embed": {
                                                     "title": "Tomoko's Status",
@@ -195,7 +195,7 @@ bot.registerCommand("status", (message, args) => {
                                                         },
                                                         {
                                                             "name": ":speaker: Music Status",
-                                                            "value": "I am currently **not playing** any music."
+                                                            "value": "I am currently " + musicStatus
                                                         },
                                                         {
                                                             "name": ":floppy_disk: RAM Usage",
