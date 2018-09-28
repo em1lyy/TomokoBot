@@ -1,4 +1,5 @@
 /**
+ * 
  * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! 
  * Copyright (C) 2018 Jonas Jaguar <jonasjaguar@jagudev.net>
  * 
@@ -2794,6 +2795,8 @@ bot.on("messageCreate", (message) => { // When a message is created
     if (message.content === bot.user.mention) {
         var mentionMsgId = Math.floor(Math.random() * messages.mention.length); // Generate a random number
         bot.createMessage(message.channel.id, messages.mention[mentionMsgId].replace("$user", message.author.mention)); // Send a random mention message
+    } else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
+         chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
     }
     /**if (message.content == "*shutdown") { // Used for some little testing. Senseless.
         if (message.member.permission.has("administrator")) {
@@ -2806,17 +2809,15 @@ bot.on("messageCreate", (message) => { // When a message is created
 
 /**
  * 
- * MUSIC FUNCTIONS
- * 
-**/
-
-
-
-/**
- * 
  * MISC FUNCTIONS
  * 
 **/
+
+async function chat(channelId, message) {
+    var chat = await neko.getSFWChat({ text: message });
+    logger.info(chat);
+    bot.createMessage(channelId, ":speech_balloon: " + chat.response); // Send a message with the response
+}
 
 function checkVote(user) { // A function to check if the user has voted for me on discordbots.org
     return true;
