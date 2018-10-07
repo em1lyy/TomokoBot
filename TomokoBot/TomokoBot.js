@@ -1532,10 +1532,11 @@ bot.registerCommand("repeat", (message, args) => { // Command to set repeat stat
         if (musicGuilds.has(message.member.guild.id)) {
             var guild = musicGuilds.get(message.member.guild.id);
             var repeatMode = "NoRepeat";
-            if (guild.repeatQueue)
+            if (guild.repeatQueue) {
                 repeatMode = "RepeatQueue";
-            else if (guild.repeatSong)
+            } else if (guild.repeatSong) {
                 repeatMode = "RepeatSong";
+            }
             bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
@@ -2422,6 +2423,28 @@ bot.registerCommand("nekogif", (message, args) => { // NekoGIF Command
     "cooldownReturns": 4
 });**/
 
+async function foxgirl(sender, channelId) {
+    var foxgirl = await neko.getSFWFoxGirl();
+    logger.info(foxgirl);
+    bot.createMessage(channelId, {
+        "embed": {
+            "title": "Here's a foxgirl for you :fox:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": foxgirl.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
+}
+
 bot.registerCommand("foxgirl", (message, args) => { // Fox girl Command
     if (args.length === 0) {
         foxgirl(message.member, message.channel.id);
@@ -2435,26 +2458,26 @@ bot.registerCommand("foxgirl", (message, args) => { // Fox girl Command
     "cooldownReturns": 5
 });
 
-async function foxgirl(sender, channelId) {
-    var foxgirl = await neko.getSFWFoxGirl();
-    logger.info(foxgirl);
+async function kemonomimi(sender, channelId) {
+    var kemonomimi = await neko.getSFWKemonomimi();
+    logger.info(kemonomimi);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Here's a foxgirl for you :fox:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": foxgirl.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "Here's a kemonomimi image for you :dancers:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": kemonomimi.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
@@ -2470,28 +2493,6 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
     "cooldownReturns": 5
 });
 
-async function kemonomimi(sender, channelId) {
-    var kemonomimi = await neko.getSFWKemonomimi();
-    logger.info(kemonomimi);
-    bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Here's a kemonomimi image for you :dancers:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": kemonomimi.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
-}
-
 /**
  * 
  * CURRENCY COMMANDS
@@ -2506,42 +2507,29 @@ async function kemonomimi(sender, channelId) {
  * 
 **/
 
-bot.registerCommand("8ball", (message, args) => { // Command to aks the 8ball something
-    if (args.length >= 1) {
-        askTheEightBall(message.member, message.channel.id, args.join(' '));
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
 async function askTheEightBall(sender, channelId, question) {
     var answer = await neko.getSFW8Ball(question);
     logger.info(answer);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Magic 8 Ball :8ball:",
-                                                "description": sender.mention + ", " + answer.response,
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the answer as embed.
+        "embed": {
+            "title": "Magic 8 Ball :8ball:",
+            "description": sender.mention + ", " + answer.response,
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the answer as embed.
 }
 
-bot.registerCommand("fact", (message, args) => { // Command to get a random fact
-    if (args.length === 0) {
-        fact(message.member, message.channel.id);
+bot.registerCommand("8ball", (message, args) => { // Command to aks the 8ball something
+    if (args.length >= 1) {
+        askTheEightBall(message.member, message.channel.id, args.join(' '));
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
@@ -2556,21 +2544,34 @@ async function fact(sender, channelId) {
     var fact = await neko.getSFWFact();
     logger.info(fact);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Tomoko's Facts :bulb:",
-                                                "description": fact.fact,
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with a fact as embed.
+        "embed": {
+            "title": "Tomoko's Facts :bulb:",
+            "description": fact.fact,
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with a fact as embed.
 }
+
+bot.registerCommand("fact", (message, args) => { // Command to get a random fact
+    if (args.length === 0) {
+        fact(message.member, message.channel.id);
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
 
 bot.registerCommand("catfact", (message, args) => { // Catfact command
     if (args.length === 0) {
@@ -2711,6 +2712,26 @@ bot.registerCommand("rolldice", (message, args) => { // Roll a (virtual) dice
 
 bot.registerCommandAlias("dice", "rolldice"); // Register command alias for lazy people
 
+async function why(sender, channelId) {
+    var why = await neko.getSFWWhy();
+    logger.info(why);
+    bot.createMessage(channelId, {
+        "embed": {
+            "title": "Tomoko's Random Questions :question:",
+            "description": why.why,
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with a fact as embed.
+}
+
 bot.registerCommand("why", (message, args) => { // Command to get a random fact
     if (args.length === 0) {
         why(message.member, message.channel.id);
@@ -2724,24 +2745,24 @@ bot.registerCommand("why", (message, args) => { // Command to get a random fact
     "cooldownReturns": 4
 });
 
-async function why(sender, channelId) {
-    var why = await neko.getSFWWhy();
-    logger.info(why);
+async function owo(sender, channelId, text) {
+    var owo = await neko.getSFWOwOify({ text: text });
+    logger.info(owo.owo);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Tomoko's Random Questions :question:",
-                                                "description": why.why,
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with a fact as embed.
+        "embed": {
+            "title": "Tomoko's OwOified Text Converter OwO",
+            "description": ":inbox_tray: Input:\n" + text + "\n:outbox_tray: Output:\n" + owo.owo,
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with owoified text as embed
 }
 
 bot.registerCommand("owoify", (message, args) => { // Command to owoify a text
@@ -2756,26 +2777,6 @@ bot.registerCommand("owoify", (message, args) => { // Command to owoify a text
     "cooldownMessage": messages.cooldown,
     "cooldownReturns": 4
 });
-
-async function owo(sender, channelId, text) {
-    var owo = await neko.getSFWOwOify({text: text});
-    logger.info(owo.owo);
-    bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Tomoko's OwOified Text Converter OwO",
-                                                "description": ":inbox_tray: Input:\n" + text + "\n:outbox_tray: Output:\n" + owo.owo,
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with owoified text as embed
-}
 
 bot.registerCommandAlias("owofy", "owoify"); // Register command alias for lazy people
 
@@ -2798,7 +2799,7 @@ bot.registerCommand("lovemeter", (message, args) => { // LOVEMETER 3000 PRO 2.0
     }
     var love = 0;
     if (user1 == bot.user || user2 == bot.user) {
-        if (user1.id == config.ownerId || user2.id == config.ownerId) {
+        if (user1.id === config.ownerId || user2.id === config.ownerId) {
             love = 100;
         } else {
             love = (user1.discriminator + user2.discriminator) % 101;
@@ -2841,6 +2842,12 @@ bot.registerCommand("lovemeter", (message, args) => { // LOVEMETER 3000 PRO 2.0
 });
 
 bot.registerCommandAlias("love", "lovemeter"); // Register command alias for lazy people
+
+function handleResponse(response) {
+    return response.json().then(function (json) {
+        return response.ok ? json : Promise.reject(json);
+    });
+}
 
 bot.registerCommand("anime", (message, args) => { // Command to get info about an anime
     if (args.length >= 1) {
@@ -2887,12 +2894,12 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
             perPage: 9,
             format: "TV"
         };
-        var url = 'https://graphql.anilist.co',
+        var url = "https://graphql.anilist.co",
             options = {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify({
                     query: query,
@@ -2916,12 +2923,6 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
     "cooldownMessage": messages.cooldown,
     "cooldownReturns": 4
 });
-
-function handleResponse(response) {
-    return response.json().then(function (json) {
-        return response.ok ? json : Promise.reject(json);
-    });
-}
 
 /**bot.registerCommand("name", (message, args) => { // Command template
     if (args.length === 0) {
