@@ -90,19 +90,19 @@ var musicGuilds = new Map();
  * 
 **/
 
-process.on('uncaughtException', (err) => { // When an exception occurs...
+process.on("uncaughtException", (err) => { // When an exception occurs...
     logger.error("Caught exception: " + err.message); // Log exception message...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
     bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 });
 
-process.on('unhandledRejection', (err, p) => { // When an promise rejection occurs...
+process.on("unhandledRejection", (err, p) => { // When an promise rejection occurs...
     logger.error("Caught exception: " + err.message); // Log exception message...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
     bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 });
 
-bot.on('error', (err, id) => { // When an exception occurs...
+bot.on("error", (err, id) => { // When an exception occurs...
     logger.error("Caught exception: " + err.message + " from shard # " + id); // Log exception message and Shard ID...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
     bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + id + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
@@ -125,7 +125,7 @@ function logError(err, shardId) { // Alter error function
  * That's bad, trust me. And it hurts.
 **/
 
-process.on('SIGINT', function () { // CTRL+C / Kill process event
+process.on("SIGINT", function () { // CTRL+C / Kill process event
     logInfo("Shutting down.");
     bot.disconnect();
     clearTimeout(playingStatusUpdater);
@@ -140,7 +140,7 @@ process.on('SIGINT', function () { // CTRL+C / Kill process event
 **/
 
 function getUserName(member) {
-    if (member.nick == null || member.nick == undefined) {
+    if (member.nick === null) {
         return member.username;
     } else {
         return member.nick;
