@@ -2948,7 +2948,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
 bot.on("guildCreate", (guild) => { // On a new guild
     logger.info("New guild!"); // Log message
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
-    logger.info("Icon URL: " + guild.iconURL)
+    logger.info("Icon URL: " + guild.iconURL);
     bot.createMessage(config.guildUpdateChannelId, {
                                                 "embed": {
                                                     "title": "New Guild in Shard #" + guild.shard.id + "!",
