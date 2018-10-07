@@ -1377,7 +1377,7 @@ bot.registerCommand("queue", (message, args) => { // Command to list the current
             var guild = musicGuilds.get(message.member.guild.id);
             var queue = "";
             for (let i = 0; i < guild.queue.length; i++) {
-                queue += (i+1) + ". [" + guild.queue[i].title + "](" + guild.queue[i].ytUrl + ") (" + guild.queue[i].duration + ")\n"
+                queue += (i + 1) + ". [" + guild.queue[i].title + "](" + guild.queue[i].ytUrl + ") (" + guild.queue[i].duration + ")\n";
             }
             if (queue.length >= 1920) {
                 var msgCount = Math.ceil(queue.length / 1920);
@@ -1493,10 +1493,11 @@ bot.registerCommand("repeat", (message, args) => { // Command to set repeat stat
                 invalidArgs(message, message.author, message.content.split(" ")[0]);
             }
             var repeatMode = "NoRepeat";
-            if (guild.repeatQueue)
+            if (guild.repeatQueue) {
                 repeatMode = "RepeatQueue";
-            else if (guild.repeatSong)
+            } else if (guild.repeatSong) {
                 repeatMode = "RepeatSong";
+            }
             bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
@@ -1645,8 +1646,9 @@ bot.registerCommand("shuffle", (message, args) => { // Command to shuffle the qu
                 guild.shuffle = true;
             }
             var shuffleMode = "NoShuffle";
-            if (guild.shuffle) 
+            if (guild.shuffle) {
                 shuffleMode = "Shuffle";
+            }
             bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
@@ -1692,7 +1694,7 @@ bot.registerCommand("volume", (message, args) => { // Volume command
         if (musicGuilds.has(message.member.guild.id)) {
             var guild = musicGuilds.get(message.member.guild.id);
             var volume = parseFloat(args[0]);
-            if (volume != NaN) {
+            if (isNaN(volume)) {
                 guild.connection.setVolume(volume);
                 bot.createMessage(message.channel.id, {
                                                         "embed": {
@@ -1744,6 +1746,28 @@ bot.registerCommand("volume", (message, args) => { // Volume command
  * 
 **/
 
+async function pat(sender, target, channelId) {
+    var pat = await neko.getSFWPat();
+    logger.info(pat);
+    bot.createMessage(channelId, {
+        "embed": {
+            "title": "**" + target + "** you have been patted by **" + sender.nick + "**",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": pat.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
+}
+
 bot.registerCommand("pat", (message, args) => { // Pat command
     if (args.length === 1) {
         if (message.mentions.length === 1) {
@@ -1765,26 +1789,27 @@ bot.registerCommand("pat", (message, args) => { // Pat command
     "cooldownReturns": 5
 });
 
-async function pat(sender, target, channelId) {
-    var pat = await neko.getSFWPat();
-    logger.info(pat);
+
+async function hug(sender, target, channelId) {
+    var hug = await neko.getSFWHug();
+    logger.info(hug);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been patted by **" + sender.nick + "**",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": pat.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been hugged by **" + sender.nick + "** :heart:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": hug.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("hug", (message, args) => { // Hug Command
@@ -1808,26 +1833,27 @@ bot.registerCommand("hug", (message, args) => { // Hug Command
     "cooldownReturns": 5
 });
 
-async function hug(sender, target, channelId) {
-    var hug = await neko.getSFWHug();
-    logger.info(hug);
+
+async function kiss(sender, target, channelId) {
+    var kiss = await neko.getSFWKiss();
+    logger.info(kiss);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been hugged by **" + sender.nick + "** :heart:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": hug.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been kissed by **" + sender.nick + "** :heart:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": kiss.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("kiss", (message, args) => { // Kiss Command
@@ -1851,26 +1877,27 @@ bot.registerCommand("kiss", (message, args) => { // Kiss Command
     "cooldownReturns": 5
 });
 
-async function kiss(sender, target, channelId) {
-    var kiss = await neko.getSFWKiss();
-    logger.info(kiss);
+
+async function slap(sender, target, channelId) {
+    var slap = await neko.getSFWSlap();
+    logger.info(slap);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been kissed by **" + sender.nick + "** :heart:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": kiss.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been slapped by **" + sender.nick + "** :punch:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": slap.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("slap", (message, args) => { // Slap Command
@@ -1894,26 +1921,27 @@ bot.registerCommand("slap", (message, args) => { // Slap Command
     "cooldownReturns": 5
 });
 
-async function slap(sender, target, channelId) {
-    var slap = await neko.getSFWSlap();
-    logger.info(slap);
+
+async function tickle(sender, target, channelId) {
+    var tickle = await neko.getSFWTickle();
+    logger.info(tickle);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been slapped by **" + sender.nick + "** :punch:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": slap.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been tickled by **" + sender.nick + "** :joy:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": tickle.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("tickle", (message, args) => { // Tickle Command
@@ -1937,26 +1965,27 @@ bot.registerCommand("tickle", (message, args) => { // Tickle Command
     "cooldownReturns": 5
 });
 
-async function tickle(sender, target, channelId) {
-    var tickle = await neko.getSFWTickle();
-    logger.info(tickle);
+
+async function cuddle(sender, target, channelId) {
+    var cuddle = await neko.getSFWCuddle();
+    logger.info(cuddle);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been tickled by **" + sender.nick + "** :joy:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": tickle.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been cuddled by **" + sender.nick + "** :heart:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": cuddle.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("cuddle", (message, args) => { // Cuddle Command
@@ -1980,26 +2009,27 @@ bot.registerCommand("cuddle", (message, args) => { // Cuddle Command
     "cooldownReturns": 5
 });
 
-async function cuddle(sender, target, channelId) {
-    var cuddle = await neko.getSFWCuddle();
-    logger.info(cuddle);
+
+async function meow(sender, channelId) {
+    var meow = await neko.getSFWMeow();
+    logger.info(meow);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been cuddled by **" + sender.nick + "** :heart:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": cuddle.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "Meow :cat:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": meow.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("meow", (message, args) => { // Meow Command
@@ -2015,26 +2045,27 @@ bot.registerCommand("meow", (message, args) => { // Meow Command
     "cooldownReturns": 5
 });
 
-async function meow(sender, channelId) {
-    var meow = await neko.getSFWMeow();
-    logger.info(meow);
+
+async function poke(sender, target, channelId) {
+    var poke = await neko.getSFWPoke();
+    logger.info(poke);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Meow :cat:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": meow.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been poked by **" + sender.nick + "** :eyes:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": poke.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("poke", (message, args) => { // Poke Command
@@ -2058,26 +2089,27 @@ bot.registerCommand("poke", (message, args) => { // Poke Command
     "cooldownReturns": 5
 });
 
-async function poke(sender, target, channelId) {
-    var poke = await neko.getSFWPoke();
-    logger.info(poke);
+
+async function smug(sender, channelId) {
+    var smug = await neko.getSFWSmug();
+    logger.info(smug);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been poked by **" + sender.nick + "** :eyes:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": poke.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "You can be proud of yourself :trophy:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": smug.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("smug", (message, args) => { // Smug Command
@@ -2093,26 +2125,27 @@ bot.registerCommand("smug", (message, args) => { // Smug Command
     "cooldownReturns": 5
 });
 
-async function smug(sender, channelId) {
-    var smug = await neko.getSFWSmug();
-    logger.info(smug);
+
+async function baka(sender, channelId) {
+    var baka = await neko.getSFWBaka();
+    logger.info(baka);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "You can be proud of yourself :trophy:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": smug.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "BAAAKAAAA! :mega:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": baka.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("baka", (message, args) => { // Baka Command
@@ -2128,26 +2161,27 @@ bot.registerCommand("baka", (message, args) => { // Baka Command
     "cooldownReturns": 5
 });
 
-async function baka(sender, channelId) {
-    var baka = await neko.getSFWBaka();
-    logger.info(baka);
+
+async function feed(sender, target, channelId) {
+    var feed = await neko.getSFWFeed();
+    logger.info(feed);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "BAAAKAAAA! :mega:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": baka.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "**" + target + "** you have been feeded by **" + sender.nick + "** :fork_and_knife:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": feed.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("feed", (message, args) => { // Feed Command
@@ -2171,26 +2205,27 @@ bot.registerCommand("feed", (message, args) => { // Feed Command
     "cooldownReturns": 5
 });
 
-async function feed(sender, target, channelId) {
-    var feed = await neko.getSFWFeed();
-    logger.info(feed);
+
+async function f_neko(sender, channelId) {
+    var i_neko = await neko.getSFWNeko();
+    logger.info(i_neko);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "**" + target + "** you have been feeded by **" + sender.nick + "** :fork_and_knife:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": feed.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "NEKOS! :cat: :heart:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": i_neko.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("neko", (message, args) => { // Neko Command
@@ -2206,26 +2241,27 @@ bot.registerCommand("neko", (message, args) => { // Neko Command
     "cooldownReturns": 5
 });
 
-async function f_neko(sender, channelId) {
-    var i_neko = await neko.getSFWNeko();
-    logger.info(i_neko);
+
+async function nekogif(sender, channelId) {
+    var nekogif = await neko.getSFWNekoGif();
+    logger.info(nekogif);
     bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "NEKOS! :cat: :heart:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": i_neko.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
+        "embed": {
+            "title": "NEKO GIFS! :cat: :heart:",
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "image": {
+                "url": nekogif.url
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+            }
+        }
+    }); // Send a message with the GIF as embed.
 }
 
 bot.registerCommand("nekogif", (message, args) => { // NekoGIF Command
@@ -2241,27 +2277,7 @@ bot.registerCommand("nekogif", (message, args) => { // NekoGIF Command
     "cooldownReturns": 5
 });
 
-async function nekogif(sender, channelId) {
-    var nekogif = await neko.getSFWNekoGif();
-    logger.info(nekogif);
-    bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "NEKO GIFS! :cat: :heart:",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": nekogif.url
-                                                },
-                                                "footer": {
-                                                    "icon_url": sender.avatarURL,
-                                                    "text": "Powered by: nekos.life, Requested by: " + sender.nick
-                                                }
-                                            }
-                                           }); // Send a message with the GIF as embed.
-}
+
 
 /**bot.registerCommand("bite", (message, args) => { // Bite Command
     if (args.length === 0) {
