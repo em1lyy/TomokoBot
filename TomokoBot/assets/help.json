@@ -1,4 +1,5 @@
 {
+    "_missing-action-commands": "/* MISSING: bite, bloodsuck, holdhands, stare, smile, blush, sleepy, dance, cry, eat, highfive */",
     "help": {
         "title": "Tomoko's Help",
         "description": "O-Oh, you need some h-help, here are s-some of my f-features:",
@@ -12,7 +13,7 @@
                 "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume`"
             },
             {
-                "name": ":speech_balloon: Action commands", /* MISSING: bite, bloodsuck, holdhands, stare, smile, blush, sleepy, dance, cry, eat, highfive */
+                "name": ":speech_balloon: Action commands", 
                 "value": "`pat` `hug` `kiss` `slap` `tickle` `cuddle` `meow` `poke` `smug` `baka` `feed` `neko` `nekogif` `foxgirl` `kemonomimi`"
             },
             {
