@@ -20,7 +20,7 @@
 
 const Eris = require("eris");
 const winston = require("winston");
-const client = require("nekos.life");
+const Client = require("nekos.life");
 const auth = require("./auth.json");
 const messages = require("./assets/messages.json");
 const help = require("./assets/help.json");
@@ -29,7 +29,7 @@ const config = require("./config.json");
 const jokes = require("./assets/jokes.json");
 const catfacts = require("./assets/catfacts.json");
 const ytdl = require("youtube-dl");
-const urlHelper = require('url');
+const urlHelper = require("url");
 const fetch = require("node-fetch");
 
 // Get current timestamp
@@ -37,13 +37,13 @@ var logStamp = Date.now();
 
 // Configure logger settings
 const logger = winston.createLogger({
-  level: 'debug',
+  level: "debug",
   format: winston.format.json(),
   transports: [
     // - All log: ./logs/full/${timestamp}.log 
     // - Error log: ./logs/error/${timestamp}.log
-    new winston.transports.File({ filename: 'logs/error/' + logStamp + '.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/full/' + logStamp + '.log', level: 'silly' })
+    new winston.transports.File({ filename: "logs/error/" + logStamp + ".log", level: "error" }),
+    new winston.transports.File({ filename: "logs/full/" + logStamp + ".log", level: "silly" })
   ]
 });
 
@@ -51,7 +51,7 @@ const logger = winston.createLogger({
 // If we're not in production then log to the `console` with the format:
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 // 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   logger.add(new winston.transports.Console({
     format: winston.format.simple()
   }));
@@ -75,7 +75,7 @@ var bot = new Eris.CommandClient(auth.token,
 );
 
 // Initialize nekos.life API
-var neko = new client();
+var neko = new Client();
 
 // Initialize some variables
 var playingStatusUpdater;
@@ -84,6 +84,170 @@ var uptimeM = 0;
 var uptimeS = 0;
 var musicGuilds = new Map();
 
+/**
+ * 
+ * LOGGING ON MY SERVER
+ * 
+**/
+
+process.on('uncaughtException', (err) => { // When an exception occurs...
+    logger.error("Caught exception: " + err.message); // Log exception message...
+    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
+    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+});
+
+process.on('unhandledRejection', (err, p) => { // When an promise rejection occurs...
+    logger.error("Caught exception: " + err.message); // Log exception message...
+    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
+    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+});
+
+bot.on('error', (err, id) => { // When an exception occurs...
+    logger.error("Caught exception: " + err.message + " from shard # " + id); // Log exception message and Shard ID...
+    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
+    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + id + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+});
+
+function logInfo(message) { // Alter log function
+    logger.info(message); // Log message to winston...
+    bot.createMessage(config.outputChannelId, ":information_source: " + message); // ...and send message to my log channel.
+}
+
+function logError(err, shardId) { // Alter error function
+    logger.error("Caught exception: " + err.message + " from shard # " + shardId); // Log exception message and Shard ID...
+    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
+    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + shardId + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+}
+
+/**
+ * Function to prevent the bot from being interrupted.
+ * When Ctrl+C is pressed, it first shuts the bot down and doesn't just destroys it.
+ * That's bad, trust me. And it hurts.
+**/
+
+process.on('SIGINT', function () { // CTRL+C / Kill process event
+    logInfo("Shutting down.");
+    bot.disconnect();
+    clearTimeout(playingStatusUpdater);
+    logger.info("Shut down.");
+    process.exit();
+});
+
+/**
+ * 
+ * MISC FUNCTIONS
+ * 
+**/
+
+function getUserName(member) {
+    if (member.nick == null || member.nick == undefined) {
+        return member.username;
+    } else {
+        return member.nick;
+    }
+}
+
+async function chat(channelId, message) {
+    var chat = await neko.getSFWChat({ text: message });
+    logger.info(chat);
+    bot.createMessage(channelId, ":speech_balloon: " + chat.response); // Send a message with the response
+}
+
+function checkVote(user) { // A function to check if the user has voted for me on discordbots.org
+    return true;
+}
+
+function noPermission(message, user, command) { // A function to call whenever a user tries to do something which they don't have permission to do
+    bot.createMessage(message.channel.id, {
+        "embed": {
+            "title": "No Permission!",
+            "description": messages.noperm.replace("$user", user.mention).replace("$command", command),
+            "color": 16684873,
+            "thumbnail": {
+                "url": user.avatarURL
+            },
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            }
+        }
+    }); // Send a "You don't have the permission to perform this action" message.
+}
+
+function invalidArgs(message, user, command) { // A fuction that tells the user that he used the command incorrectly
+    bot.createMessage(message.channel.id, {
+        "embed": {
+            "title": "Wrong Command Usage!",
+            "description": messages.wrongargs.replace("$user", user.mention).replace("$command", command.replace("*", "")),
+            "color": 16684873,
+            "thumbnail": {
+                "url": user.avatarURL
+            },
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            }
+        }
+    }); // Send an "Invalid arguments" message.
+}
+
+function subCommandRequired(message, user, command) { // A function to tell the user that they should specify a subcommand
+    bot.createMessage(message.channel.id, {
+        "embed": {
+            "title": "Wrong Command Usage!",
+            "description": messages.subcmd.replace("$user", user.mention).replace("$command", command.replace("*", "")),
+            "color": 16684873,
+            "thumbnail": {
+                "url": user.avatarURL
+            },
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            }
+        }
+    }); // Send an "Subcommand required" message.
+}
+
+function warnEveryone(message, user, command) { // A function that tells the user not to use @everyone or @here
+    bot.createMessage(message.channel.id, {
+        "embed": {
+            "title": "Don't do that!",
+            "description": messages.everyoneWarn.replace("$user", user.mention),
+            "color": 16684873,
+            "thumbnail": {
+                "url": user.avatarURL
+            },
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            }
+        }
+    }); // Send a "Please don't use @everyone/@here" message.
+}
+
+function refreshUptime() { // A function to refresh the uptime variables
+    uptimeH = Math.floor(bot.uptime / 60 / 60 / 1000);
+    uptimeM = Math.floor((bot.uptime / 60 / 1000) % 60);
+    uptimeS = Math.floor((bot.uptime / 1000) % 60);
+}
+
+function weebShHint(user, channelId, command) {
+    bot.createMessage(channelId, {
+        "embed": {
+            "title": "Not Aviable Yet!",
+            "description": messages.weebShHint.replace("$user", user.mention).replace("$command", command),
+            "color": 16684873,
+            "thumbnail": {
+                "url": user.avatarURL
+            },
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            }
+        }
+    }); // Inform the user about my missing permission to access the Weeb.sh API.
+}
+
 bot.on("ready", () => {    // When the bot is ready
     logInfo("Ready event called!"); // Log "Ready!" and some information
     logInfo("User: " + bot.user.username); // User name
@@ -91,15 +255,17 @@ bot.on("ready", () => {    // When the bot is ready
     logInfo("Timestamp for log files: " + logStamp); // Log file timstamp
     logInfo("Setting information!"); // "Setting information"
     var playMsgId = Math.floor(Math.random() * messages.playing.length); // Generate a random number
+    var playMsg = messages.playing[playMsgId];
     bot.editStatus("online", { // Set status
-        "name":"*help | " + messages.playing[playMsgId],
+        "name":"*help | " + playMsg,
         "type":0,
         "url":"https://github.com/jonasjaguar/TomokoBot"
     });
     playingStatusUpdater = setInterval(function() { // Change status every minute
         var playMsgId = Math.floor(Math.random() * messages.playing.length); // Generate a random number
+        var playMsg = messages.playing[playMsgId];
         bot.editStatus("online", { // Set status
-            "name":"*help | " + messages.playing[playMsgId],
+            "name":"*help | " + playMsg,
             "type":0,
             "url":"https://github.com/jonasjaguar/TomokoBot"
         });
@@ -157,8 +323,9 @@ bot.registerCommand("status", (message, args) => {
             }
         });
         var musicStatus = "**not playing** any music.";
-        if (musicGuilds.has(message.member.guild.id))
+        if (musicGuilds.has(message.member.guild.id)) {
             musicStatus = "playing **" + musicGuilds.get(message.member.guild.id).queue[0].title + "**.";
+        }
         bot.createMessage(message.channel.id, {
                                                 "embed": {
                                                     "title": "Tomoko's Status",
@@ -501,7 +668,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
     if (args.length === 1) {
         var urlObj = urlHelper.parse(args[0]);
         var hostname = urlObj.hostname;
-        if (hostname === 'youtube.com' || hostname === 'www.youtube.com' || hostname === 'youtu.be' || hostname === 'www.youtu.be') {
+        if (hostname === "youtube.com" || hostname === "www.youtube.com" || hostname === "youtu.be" || hostname === "www.youtu.be") {
             if (musicGuilds.has(message.member.guild.id)) {
                 var guild = musicGuilds.get(message.member.guild.id);
                 ytdl.getInfo(args[0], [], (err, info) => {
@@ -548,8 +715,9 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                     var bestFormat;
                     for (let j = 0; j < info.formats.length; j++) {
                         let format = info.formats[j];
-                        if (format.format.indexOf('audio only') == -1)
+                        if (format.format.indexOf("audio only") === -1) {
                             continue;
+                        }
                         if (format.abr > highestBitrate) {
                             if (highestBitrate === 0) {
                                 highestBitrate = format.abr;
@@ -658,7 +826,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
     if (args.length === 1) {
         if (musicGuilds.has(message.member.guild.id)) {
             var guild = musicGuilds.get(message.member.guild.id);
-            if (args[0] == "jpop" || args[0] == "Jpop" || args[0] == "JPop" || args[0] == "j" || args[0] == "J" || args[0] == "JPOP") {
+            if (args[0] === "jpop" || args[0] === "Jpop" || args[0] === "JPop" || args[0] === "j" || args[0] === "J" || args[0] === "JPOP") {
                 guild.queue.push({
                     "url": "https://listen.moe/opus",
                     "ytUrl": "https://listen.moe",
@@ -666,8 +834,9 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon.png",
                     "duration": "Pretty long I guess"
                 });
-                if (guild.connection.playing) 
+                if (guild.connection.playing) {
                     guild.connection.stopPlaying();
+                }
                 guild.queue = [];
                 guild.queue.push({
                     "url": "https://listen.moe/opus",
@@ -677,7 +846,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "duration": "Pretty long I guess"
                 });
                 guild.connection.play(guild.queue[0].url);
-            } else if (args[0] == "kpop" || args[0] == "Kpop" || args[0] == "KPop" || args[0] == "k" || args[0] == "K" || args[0] == "KPOP") {
+            } else if (args[0] === "kpop" || args[0] === "Kpop" || args[0] === "KPop" || args[0] === "k" || args[0] === "K" || args[0] === "KPOP") {
                 guild.queue.push({
                     "url": "https://listen.moe/kpop/opus",
                     "ytUrl": "https://listen.moe/kpop",
@@ -685,8 +854,9 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon-kpop.png",
                     "duration": "Pretty long I guess"
                 });
-                if (guild.connection.playing) 
+                if (guild.connection.playing) {
                     guild.connection.stopPlaying();
+                }
                 guild.queue = [];
                 guild.queue.push({
                     "url": "https://listen.moe/kpop/opus",
@@ -1095,10 +1265,12 @@ bot.registerCommand("join", (message, args) => { // Command template
                     let trackId = Math.floor(Math.random() * daguild.queue.length); // Generate a random number
                     indexx = trackId;
                 }
-                if (daguild.repeatQueue)
+                if (daguild.repeatQueue) {
                     daguild.queue.push(daguild.queue[indexx]);
-                if (!daguild.repeatSong)
+                }
+                if (!daguild.repeatSong) {
                     daguild.queue.splice(indexx, 1);
+                }
                 if (daguild.queue.length > 0) {
                     bot.createMessage(message.channel.id, {
                                             "embed": {
@@ -1228,13 +1400,15 @@ bot.registerCommand("queue", (message, args) => { // Command to list the current
                                             });
                 }
                 var repeatMode = "NoRepeat";
-                if (guild.repeatQueue)
+                if (guild.repeatQueue) {
                     repeatMode = "RepeatQueue";
-                else if (guild.repeatSong)
+                } else if (guild.repeatSong) {
                     repeatMode = "RepeatSong";
+                }
                 var shuffleMode = "NoShuffle";
-                if (guild.shuffle) 
+                if (guild.shuffle) {
                     shuffleMode = "Shuffle";
+                }
                 bot.createMessage(message.channel.id, {
                                                 "embed": {
                                                     "title": "Tomoko's Music Player: Queue",
@@ -1252,13 +1426,15 @@ bot.registerCommand("queue", (message, args) => { // Command to list the current
                 
             } else {
                 var repeatMode = "NoRepeat";
-                if (guild.repeatQueue)
+                if (guild.repeatQueue) {
                     repeatMode = "RepeatQueue";
-                else if (guild.repeatSong)
+                } else if (guild.repeatSong) {
                     repeatMode = "RepeatSong";
+                }
                 var shuffleMode = "NoShuffle";
-                if (guild.shuffle) 
+                if (guild.shuffle) {
                     shuffleMode = "Shuffle";
+                }
                 bot.createMessage(message.channel.id, {
                                                 "embed": {
                                                     "title": "Tomoko's Music Player: Queue",
@@ -2808,164 +2984,6 @@ bot.on("messageCreate", (message) => { // When a message is created
             noPermission(message, message.author, message.content.split(" ")[0]);
         }
     }**/
-});
-
-/**
- * 
- * MISC FUNCTIONS
- * 
-**/
-
-function getUserName(member) {
-    if (member.nick == null || member.nick == undefined) {
-        return member.username;
-    } else {
-        return member.nick;
-    }
-}
-
-async function chat(channelId, message) {
-    var chat = await neko.getSFWChat({ text: message });
-    logger.info(chat);
-    bot.createMessage(channelId, ":speech_balloon: " + chat.response); // Send a message with the response
-}
-
-function checkVote(user) { // A function to check if the user has voted for me on discordbots.org
-    return true;
-}
-
-function noPermission(message, user, command) { // A function to call whenever a user tries to do something which they don't have permission to do
-    bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "No Permission!",
-                                                "description": messages.noperm.replace("$user", user.mention).replace("$command", command),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send a "You don't have the permission to perform this action" message.
-}
-
-function invalidArgs(message, user, command) { // A fuction that tells the user that he used the command incorrectly
-    bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Wrong Command Usage!",
-                                                "description": messages.wrongargs.replace("$user", user.mention).replace("$command", command.replace("*", "")),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send an "Invalid arguments" message.
-}
-
-function subCommandRequired(message, user, command) { // A function to tell the user that they should specify a subcommand
-    bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Wrong Command Usage!",
-                                                "description": messages.subcmd.replace("$user", user.mention).replace("$command", command.replace("*", "")),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send an "Subcommand required" message.
-}
-
-function warnEveryone(message, user, command) { // A function that tells the user not to use @everyone or @here
-    bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Don't do that!",
-                                                "description": messages.everyoneWarn.replace("$user", user.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send a "Please don't use @everyone/@here" message.
-}
-
-function refreshUptime() { // A function to refresh the uptime variables
-    uptimeH = Math.floor(bot.uptime / 60 / 60 / 1000);
-    uptimeM = Math.floor((bot.uptime / 60 / 1000) % 60);
-    uptimeS = Math.floor((bot.uptime / 1000) % 60);
-}
-
-function weebShHint(user, channelId, command) {
-    bot.createMessage(channelId, {
-                                            "embed": {
-                                                "title": "Not Aviable Yet!",
-                                                "description": messages.weebShHint.replace("$user", user.mention).replace("$command", command),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Inform the user about my missing permission to access the Weeb.sh API.
-}
-
-/**
- * 
- * LOGGING ON MY SERVER
- * 
-**/
-
-process.on('uncaughtException', (err) => { // When an exception occurs...
-    logger.error("Caught exception: " + err.message); // Log exception message...
-    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
-});
-
-process.on('unhandledRejection', (err, p) => { // When an promise rejection occurs...
-    logger.error("Caught exception: " + err.message); // Log exception message...
-    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
-});
-
-bot.on('error', (err, id) => { // When an exception occurs...
-    logger.error("Caught exception: " + err.message + " from shard # " + id); // Log exception message and Shard ID...
-    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + id + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
-});
-
-function logInfo(message) { // Alter log function
-    logger.info(message); // Log message to winston...
-    bot.createMessage(config.outputChannelId, ":information_source: " + message); // ...and send message to my log channel.
-}
-
-function logError(err, shardId) { // Alter error function
-    logger.error("Caught exception: " + err.message + " from shard # " + shardId); // Log exception message and Shard ID...
-    logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + shardId + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
-}
-
-process.on('SIGINT', function() { // CTRL+C / Kill process event
-    logInfo("Shutting down.");
-    bot.disconnect();
-    clearTimeout(playingStatusUpdater);
-    logger.info("Shut down.");
-    process.exit();
 });
 
 // Get the bot to connect to Discord
