@@ -62,7 +62,8 @@ var bot = new Eris.CommandClient(auth.token,
                           {
                               "defaultImageSize": 512,
                               "autoreconnect": true,
-                              "defaultImageFormat": "jpg"
+                              "defaultImageFormat": "jpg",
+                              "maxShards": config.shardCount
                           },
                           {
                               "defaultHelpCommand": false,
@@ -165,7 +166,7 @@ bot.registerCommand("status", (message, args) => {
                                                     "color": 16684873,
                                                     "footer": {
                                                         "icon_url": message.author.avatarURL,
-                                                        "text": "Requested by: " + message.member.nick
+                                                        "text": "Requested by: " + getUserName(message.member)
                                                     },
                                                     "thumbnail": {
                                                         "url": bot.user.avatarURL
@@ -249,7 +250,7 @@ bot.registerCommand("avatar", (message, args) => { // Command to get the avatar 
                                                 },
                                                 "footer": {
                                                     "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + message.member.nick
+                                                    "text": "Requested by: " + getUserName(message.member)
                                                 }
                                             }
                                            }); // Send a message with the avatar as embed.
@@ -284,7 +285,7 @@ bot.registerCommand("help", (message, args) => { // Help command
                                                     },
                                                     "footer": {
                                                         "icon_url": message.author.avatarURL,
-                                                        "text": "78 commands, Requested by: " + message.member.nick
+                                                        "text": "78 commands, Requested by: " + getUserName(message.member)
                                                     },
                                                     "fields": help.help.fields
                                                 }
@@ -305,7 +306,7 @@ bot.registerCommand("help", (message, args) => { // Help command
                                                     },
                                                 "footer": {
                                                     "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + message.member.nick
+                                                    "text": "Requested by: " + getUserName(message.member)
                                                 }
                                             }
                                            }); // Send a "no help aviable" message.
@@ -325,7 +326,7 @@ bot.registerCommand("help", (message, args) => { // Help command
                                                     },
                                                     "footer": {
                                                         "icon_url": message.author.avatarURL,
-                                                        "text": "Requested by: " + message.member.nick
+                                                        "text": "Requested by: " + getUserName(message.member)
                                                     },
                                                     "fields": [
                                                         {
@@ -812,6 +813,7 @@ bot.registerCommand("stop", (message, args) => { // Command to stop playing and 
     if (args.length === 0) {
         if (musicGuilds.has(message.member.guild.id)) {
             var guild = musicGuilds.get(message.member.guild.id);
+            guild.queue = [];
             if(guild.connection.playing) { // Stop playing if the connection is playing something
                 guild.connection.stopPlaying();
             }
@@ -1118,10 +1120,11 @@ bot.registerCommand("join", (message, args) => { // Command template
                         daguild.connection.stopPlaying();
                     }
                     bot.leaveVoiceChannel(daguild.channelID);
+                    musicGuilds.delete(message.member.guild.id);
                     bot.createMessage(daguild.textChannelId, {
                                                     "embed": {
                                                         "title": "Tomoko's Music Player",
-                                                        "description": "F-Finished playing t-the queue, " + message.member.nick + "!\nI hope i-it wasn't t-too bad...",
+                                                        "description": "F-Finished playing t-the queue, " + getUserName(message.member) + "!\nI hope i-it wasn't t-too bad...",
                                                         "color": 16684873,
                                                         "thumbnail": {
                                                             "url": bot.user.avatarURL
@@ -1137,7 +1140,7 @@ bot.registerCommand("join", (message, args) => { // Command template
             bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
-                                                "description": "I-I'm now in your v-voice channel, " + message.member.nick + "!\nP-Please remember that I'll l-leave the channel w-when you don't u-use any m-music functions within the next m-minute!",
+                                                "description": "I-I'm now in your v-voice channel, " + getUserName(message.member) + "!\nP-Please remember that I'll l-leave the channel w-when you don't u-use any m-music functions within the next m-minute!",
                                                 "color": 16684873,
                                                 "thumbnail": {
                                                     "url": bot.user.avatarURL
@@ -1158,7 +1161,7 @@ bot.registerCommand("join", (message, args) => { // Command template
                 bot.createMessage(guild.textChannelId, {
                                                 "embed": {
                                                     "title": "Tomoko's Music Player",
-                                                    "description": "I-I'm no l-longer in your v-voice channel, " + message.member.nick + "!\nD-Don't leave m-me alone again, okay?",
+                                                    "description": "I-I'm no l-longer in your v-voice channel, " + getUserName(message.member) + "!\nD-Don't leave m-me alone again, okay?",
                                                     "color": 16684873,
                                                     "thumbnail": {
                                                         "url": bot.user.avatarURL
@@ -2391,7 +2394,7 @@ bot.registerCommand("catfact", (message, args) => { // Catfact command
                                             },
                                             "footer": {
                                                 "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + message.member.nick
+                                                "text": "Requested by: " + getUserName(message.member)
                                             }
                                         }
                                         }); // Send a message with a very bad joke as embed
@@ -2419,7 +2422,7 @@ bot.registerCommand("joke", (message, args) => { // Joke command
                                             },
                                             "footer": {
                                                 "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + message.member.nick
+                                                "text": "Requested by: " + getUserName(message.member)
                                             }
                                         }
                                         }); // Send a message with a very bad joke as embed
@@ -2453,7 +2456,7 @@ bot.registerCommand("coinflip", (message, args) => { // Coin flip
                                                 },
                                                 "footer": {
                                                     "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + message.member.nick
+                                                    "text": "Requested by: " + getUserName(message.member)
                                                 }
                                             }
                                             }); // Send a message with the coin flip result
@@ -2470,7 +2473,7 @@ bot.registerCommand("coinflip", (message, args) => { // Coin flip
                                             },
                                             "footer": {
                                                 "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + message.member.nick
+                                                "text": "Requested by: " + getUserName(message.member)
                                             }
                                         }
                                         }); // Send a message with the coin flip result
@@ -2500,7 +2503,7 @@ bot.registerCommand("rolldice", (message, args) => { // Roll a (virtual) dice
                                             },
                                             "footer": {
                                                 "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + message.member.nick
+                                                "text": "Requested by: " + getUserName(message.member)
                                             }
                                         }
                                         }); // Send a message with the dice result
@@ -2634,7 +2637,7 @@ bot.registerCommand("lovemeter", (message, args) => { // LOVEMETER 3000 PRO 2.0
                                             },
                                             "footer": {
                                                 "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + message.member.nick
+                                                "text": "Requested by: " + getUserName(message.member)
                                             }
                                         }
                                         }); // Send a message with the love meter result
@@ -2812,6 +2815,14 @@ bot.on("messageCreate", (message) => { // When a message is created
  * MISC FUNCTIONS
  * 
 **/
+
+function getUserName(member) {
+    if (member.nick == null || member.nick == undefined) {
+        return member.username;
+    } else {
+        return member.nick;
+    }
+}
 
 async function chat(channelId, message) {
     var chat = await neko.getSFWChat({ text: message });

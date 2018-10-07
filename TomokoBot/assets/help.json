@@ -12,8 +12,8 @@
                 "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume`"
             },
             {
-                "name": ":speech_balloon: Action commands",
-                "value": "`pat` `hug` `kiss` `slap` `bite` `bloodsuck` `tickle` `holdhands` `smile` `stare` `cuddle` `blush` `sleepy` `dance` `cry` `meow` `eat` `poke` `smug` `baka` `feed` `neko` `nekogif` `foxgirl` `highfive` `kemonomimi`"
+                "name": ":speech_balloon: Action commands", /* MISSING: bite, bloodsuck, holdhands, stare, smile, blush, sleepy, dance, cry, eat, highfive */
+                "value": "`pat` `hug` `kiss` `slap` `tickle` `cuddle` `meow` `poke` `smug` `baka` `feed` `neko` `nekogif` `foxgirl` `kemonomimi`"
             },
             {
                 "name": ":moneybag: Currency commands",

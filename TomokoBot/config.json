@@ -1,8 +1,9 @@
 {
-    "officialServer":"485758461393502211",
-    "outputChannelId":"485769031387709441",
-    "guildUpdateChannelId":"487900509341089793",
-    "maxSongDuration":600,
-    "maxBitRate": "128",
+    "officialServer": "485758461393502211",
+    "outputChannelId": "485769031387709441",
+    "guildUpdateChannelId": "487900509341089793",
+    "maxSongDuration": 660,
+    "shardCount":  3,
+    "maxBitRate": "129",
     "ownerId": "398116585753280534"
 }

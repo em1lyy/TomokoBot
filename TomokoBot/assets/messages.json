@@ -1,8 +1,8 @@
 {
-    "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "Ehm, d-do I know y-you?", "=^_^=", "H-Hi!"],
+    "welcome":["Oh, hi!", "W-Welcome", "H-Hello! I-I am Tomoko, who a-are you?", "=^_^=", "H-Hi!", "Welcome to this s-server!"],
     "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Eek! Oh, i-it's j-just you, $user. I was a b-bit scared.", "$user? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, $user"],
     "noperm":"S-Sorry $user, but you d-don't have the required p-permission to run `$command`.\nIf you t-think that this is an error, you m-may contact the s-server owner",
-    "playing":["with my code", "with you", "watching anime", "with your ❤", "nothing", "with myself", "RealLife.exe", "Super Mario Bros.", "reading manga", "the piano"],
+    "playing":["with my code", "with you", "watching anime", "with your ❤", "nothing", "with myself", "RealLife.exe", "Super Mario Bros.", "reading manga", "the piano", "with AI", "nodejs.exe", "I have no idea what I should write here."],
     "wrongargs":"Sorry $user, but t-that's not h-how you use this c-command.\nYou m-may use `*help $command` to get more information o-on how to u-use the c-command.",
     "subcmd":"S-Sorry $user, b-but you need to s-specify a sub-command in order t-to use `$command`.\nYou m-may try `*help $command` to get a l-list of sub-commands.",
     "cooldown":"P-Please don't call m-me so fast, I m-might get a b-burnout",
