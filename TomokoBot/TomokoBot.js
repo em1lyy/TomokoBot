@@ -304,15 +304,14 @@ bot.registerCommand("servers", (message, args) => { // Displays every server Tom
     if (args.length === 0) {
         if (message.author.id === config.ownerId) {
             logInfo("Servers requested.");
-            var guild = musicGuilds.get(message.member.guild.id);
+            var guild = message.member.guild;
             var servers = "";
             bot.guilds.forEach((value, key, map) => {
                 servers += value.name + "\n";
             });
-
-            }
+            
             if (servers.length >= 1920) {
-                var msgCount = Math.ceil(queue.length / 1920);
+                var msgCount = Math.ceil(servers.length / 1920);
                 var messages = [];
                 let j = 0;
                 for (let g = 0; g < msgCount - 1; g++, j+= 1920) {
