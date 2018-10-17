@@ -1,21 +1,21 @@
 /**
- * 
- * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! 
+ *
+ * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
  * Copyright (C) 2018 Jonas Jaguar <jonasjaguar@jagudev.net>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
- * 
+ *
 **/
 
 const Eris = require("eris");
@@ -40,7 +40,7 @@ const logger = winston.createLogger({
   level: "debug",
   format: winston.format.json(),
   transports: [
-    // - All log: ./logs/full/${timestamp}.log 
+    // - All log: ./logs/full/${timestamp}.log
     // - Error log: ./logs/error/${timestamp}.log
     new winston.transports.File({ filename: "logs/error/" + logStamp + ".log", level: "error" }),
     new winston.transports.File({ filename: "logs/full/" + logStamp + ".log", level: "silly" })
@@ -50,7 +50,7 @@ const logger = winston.createLogger({
 //
 // If we're not in production then log to the `console` with the format:
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// 
+//
 if (process.env.NODE_ENV !== "production") {
   logger.add(new winston.transports.Console({
     format: winston.format.simple()
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Initialize Eris object
-var bot = new Eris.CommandClient(auth.token, 
+var bot = new Eris.CommandClient(auth.token,
                           {
                               "defaultImageSize": 512,
                               "autoreconnect": true,
@@ -85,9 +85,9 @@ var uptimeS = 0;
 var musicGuilds = new Map();
 
 /**
- * 
+ *
  * LOGGING ON MY SERVER
- * 
+ *
 **/
 
 process.on("uncaughtException", (err) => { // When an exception occurs...
@@ -134,9 +134,9 @@ process.on("SIGINT", function () { // CTRL+C / Kill process event
 });
 
 /**
- * 
+ *
  * MISC FUNCTIONS
- * 
+ *
 **/
 
 function getUserName(member) {
@@ -274,11 +274,11 @@ bot.on("ready", () => {    // When the bot is ready
 });
 
 /**
- * 
+ *
  * CORE COMMANDS
- * 
+ *
 **/
-        
+
 bot.registerCommand("reboot", (message, args) => { // Command to reboot Tomoko
     if (args.length === 0) {
         if (message.author.id === config.ownerId) {
@@ -287,6 +287,81 @@ bot.registerCommand("reboot", (message, args) => { // Command to reboot Tomoko
             clearTimeout(playingStatusUpdater);
             logger.info("Shut down.");
             process.exit();
+        } else {
+            noPermission(message, message.author, message.content.split(" ")[0]);
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 45000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 3
+});
+
+bot.registerCommand("servers", (message, args) => { // Displays every server Tomoko is in.
+    if (args.length === 0) {
+        if (message.author.id === config.ownerId) {
+            logInfo("Servers requested.");
+            var guild = musicGuilds.get(message.member.guild.id);
+            var servers = "";
+            bot.guilds.forEach((value, key, map) => {
+                servers += value.name + "\n";
+            });
+
+            }
+            if (servers.length >= 1920) {
+                var msgCount = Math.ceil(queue.length / 1920);
+                var messages = [];
+                let j = 0;
+                for (let g = 0; g < msgCount - 1; g++, j+= 1920) {
+                    bot.createMessage(message.channel.id, {
+                                                "embed": {
+                                                    "title": "Tomoko's Servers",
+                                                    "description": "Servers (Page " + (g+1) + " of " + msgCount + ")\n" + servers.substr(j, 1920),
+                                                    "color": 16684873,
+                                                    "thumbnail": {
+                                                        "url": bot.user.avatarURL
+                                                    },
+                                                    "author": {
+                                                        "name": "Tomoko Bot",
+                                                        "icon_url": bot.user.avatarURL
+                                                    }
+                                                }
+                                            });
+                }
+                bot.createMessage(message.channel.id, {
+                                                "embed": {
+                                                    "title": "Tomoko's Servers",
+                                                    "description": "Servers (Page " + msgCount + " of " + msgCount + "):\n" + servers.substr(j),
+                                                    "color": 16684873,
+                                                    "thumbnail": {
+                                                        "url": bot.user.avatarURL
+                                                    },
+                                                    "author": {
+                                                        "name": "Tomoko Bot",
+                                                        "icon_url": bot.user.avatarURL
+                                                    }
+                                                }
+                                            });
+
+            } else {
+                bot.createMessage(message.channel.id, {
+                                                "embed": {
+                                                    "title": "Tomoko's Servers",
+                                                    "description": "Servers:\n" + servers,
+                                                    "color": 16684873,
+                                                    "thumbnail": {
+                                                        "url": bot.user.avatarURL
+                                                    },
+                                                    "author": {
+                                                        "name": "Tomoko Bot",
+                                                        "icon_url": bot.user.avatarURL
+                                                    }
+                                                }
+                                            });
+            }
         } else {
             noPermission(message, message.author, message.content.split(" ")[0]);
         }
@@ -649,9 +724,9 @@ bot.registerCommand("checkvote", (message, args) => { // Check vote on discordbo
 });
 
 /**
- * 
+ *
  * MUSIC COMMANDS
- * 
+ *
 **/
 
 var playCmd = bot.registerCommand("play", (message, args) => { // Command to play audio from YouTube (required subcommand)
@@ -676,12 +751,12 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                         logError(err);
                         throw err;
                     }
-                    
+
                     logger.info(info.duration + " -- " + config.maxSongDuration + " -- " + (info.duration >= config.maxSongDuration));
-                    
+
                     var duration = 0;
                     var thing = info.duration.split(":");
-                    
+
                     if (thing.length === 3) {
                         duration += parseInt(thing[0] * 60 * 60, 10);
                         duration += parseInt(thing[1] * 60, 10);
@@ -692,7 +767,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                     } else if (thing.length === 1) {
                         duration += parseInt(thing[0], 10);
                     }
-                    
+
                     if (duration >= config.maxSongDuration) {
                         bot.createMessage(message.channel.id, {
                                             "embed": {
@@ -710,7 +785,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                                            });
                         return;
                     }
-                    
+
                     var highestBitrate = 0;
                     var bestFormat;
                     for (let j = 0; j < info.formats.length; j++) {
@@ -730,7 +805,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                             }
                         }
                     }
-                    
+
                     bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
@@ -745,7 +820,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                                                 }
                                             }
                                            });
-                    
+
                     guild.queue.push({
                         "url": bestFormat.url,
                         "ytUrl": "youtube.com/watch?v=" + info.id,
@@ -753,7 +828,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                         "thumbnail": info.thumbnail,
                         "duration": info.duration
                     });
-                    
+
                     if (guild.firstSong) {
                         guild.firstSong = false;
                         clearTimeout(guild.leaveCountdown);
@@ -774,9 +849,9 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                                             });
                         guild.connection.play(daguild.queue[0].url);
                     }
-                    
+
                 });
-                
+
             } else {
                 bot.createMessage(message.channel.id, {
                                             "embed": {
@@ -1058,7 +1133,7 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
             }
         } else {
             if (musicGuilds.has(message.member.guild.id)) {
-                var guild = musicGuilds.get(message.member.guild.id); // Skip emoticon: :track_next: 
+                var guild = musicGuilds.get(message.member.guild.id); // Skip emoticon: :track_next:
                 if (guild.skipVotes > 0) {
                     bot.createMessage(message.channel.id, {
                                                         "embed": {
@@ -1151,7 +1226,7 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
                                                         }
                                                     });
                 }
-                
+
                 return message.content;
             }
         }
@@ -1423,7 +1498,7 @@ bot.registerCommand("queue", (message, args) => { // Command to list the current
                                                     }
                                                 }
                                             });
-                
+
             } else {
                 var repeatMode = "NoRepeat";
                 if (guild.repeatQueue) {
@@ -1741,10 +1816,10 @@ bot.registerCommand("volume", (message, args) => { // Volume command
 });
 
 /**
- * 
+ *
  * ACTION COMMANDS
  * MISSING: bite, bloodsuck, holdhands, stare, smile, blush, sleepy, dance, cry, eat, highfive
- * 
+ *
 **/
 
 async function pat(sender, target, channelId) {
@@ -2494,17 +2569,17 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
 });
 
 /**
- * 
+ *
  * CURRENCY COMMANDS
- * 
+ *
 **/
 
 
 
 /**
- * 
+ *
  * FUN COMMANDS
- * 
+ *
 **/
 
 async function askTheEightBall(sender, channelId, question) {
@@ -2912,7 +2987,7 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
             console.log(data.data.Page);
             console.log(data.data.Page.pageInfo);
             console.log(data.data.Page.media);
-            
+
         }).catch((err) => { logError(err, message.member.shard.id); });
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
@@ -2926,7 +3001,7 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
 
 /**bot.registerCommand("name", (message, args) => { // Command template
     if (args.length === 0) {
-        
+
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
@@ -2948,7 +3023,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
 bot.on("guildCreate", (guild) => { // On a new guild
     logger.info("New guild!"); // Log message
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
-    logger.info("Icon URL: " + guild.iconURL);
+    logger.info("Icon URL: " + guild.iconURL)
     bot.createMessage(config.guildUpdateChannelId, {
                                                 "embed": {
                                                     "title": "New Guild in Shard #" + guild.shard.id + "!",
@@ -2986,7 +3061,7 @@ bot.on("guildDelete", (guild) => { // On a lost guild
 });
 
 bot.on("messageCreate", (message) => { // When a message is created
-    // First off, if the message mentions me, 
+    // First off, if the message mentions me,
     // send a random mention message
     if (message.content === bot.user.mention) {
         var mentionMsgId = Math.floor(Math.random() * messages.mention.length); // Generate a random number
