@@ -28,6 +28,7 @@ const pkg = require("./package.json");
 const config = require("./config.json");
 const jokes = require("./assets/jokes.json");
 const catfacts = require("./assets/catfacts.json");
+const rpsData = require("./assets/rps.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
 const fetch = require("node-fetch");
@@ -309,7 +310,7 @@ bot.registerCommand("servers", (message, args) => { // Displays every server Tom
             bot.guilds.forEach((value, key, map) => {
                 servers += value.name + "\n";
             });
-            
+
             if (servers.length >= 1920) {
                 var msgCount = Math.ceil(servers.length / 1920);
                 var messages = [];
@@ -2988,6 +2989,97 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
             console.log(data.data.Page.media);
 
         }).catch((err) => { logError(err, message.member.shard.id); });
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
+
+bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
+    if (args.length === 1) {
+        var id = Math.floor(Math.random() * 4); // Generate a random number
+        var iChose = rpsData.rock;
+        if (id === rpsData.paper.id) {
+          iChose = rpsData.paper;
+        }
+        if (id === rpsData.scissors.id) {
+          iChose = rpsData.scissors;
+        }
+        var userChose = undefined;
+        if (rpsData.rock.forms.indexOf(args[0]) !== -1) {
+          userChose = rpsData.rock;
+        }
+        if (rpsData.paper.forms.indexOf(args[0]) !== -1) {
+          userChose = rpsData.paper;
+        }
+        if (rpsData.scissors.forms.indexOf(args[0]) !== -1) {
+          userChose = rpsData.scissors;
+        }
+        if (userChose === undefined) {
+          bot.createMessage(message.channel.id, {
+                                              "embed": {
+                                                  "title": "Tomoko's RPS",
+                                                  "description": ":x: Error: Invalid argument `" + args[0] + "`!\nPlease check your spelling.",
+                                                  "color": 16684873,
+                                                  "author": {
+                                                      "name": "Tomoko Bot",
+                                                      "icon_url": bot.user.avatarURL
+                                                  },
+                                                  "footer": {
+                                                      "icon_url": message.author.avatarURL,
+                                                      "text": "Requested by: " + getUserName(message.member)
+                                                  }
+                                              }
+                                            }); // Send a message with the error.
+          return;
+        }
+        var iWon = false;
+        var userWon = false;
+        var tie = false;
+        if (iChose.id === userChose.id) {
+          iWon = false;
+          userWon = false;
+          tie = true;
+        }
+        if (iChose.winsAgainst === userChose.id) {
+          iWon = true;
+          userWon = false;
+          tie = false;
+        }
+        if (iChose.losesAgainst === userChose.id) {
+          iWon = false;
+          userWon = true;
+          tie = false;
+        }
+        var message = "Whoops. Something went wrong here, sorry.";
+        if (iWon === true) {
+          message = "I win!"
+        }
+        if (userWon === true) {
+          message = "You win!"
+        }
+        if (tie === true) {
+          message = "It's a tie!"
+        }
+        bot.createMessage(message.channel.id, {
+                                            "embed": {
+                                                "title": "Tomoko's RPS",
+                                                "description": "I'm choosing **" + iChose.name + "**! " + message,
+                                                "color": 16684873,
+                                                "author": {
+                                                    "name": "Tomoko Bot",
+                                                    "icon_url": bot.user.avatarURL
+                                                },
+                                                "footer": {
+                                                    "icon_url": message.author.avatarURL,
+                                                    "text": "Requested by: " + getUserName(message.member)
+                                                }
+                                            }
+                                          }); // Send a message with the rps result
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }

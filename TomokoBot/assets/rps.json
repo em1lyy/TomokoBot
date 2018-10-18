@@ -1,0 +1,23 @@
+{
+  "rock": {
+    "name": "Rock",
+    "id": 0,
+    "forms": ["rock", "Rock", "ROCK", "r", "R"],
+    "winsAgainst": 2,
+    "losesAgainst": 1
+  },
+  "paper": {
+    "name": "Paper",
+    "id": 1,
+    "forms": ["paper", "Paper", "PAPER", "p", "P"],
+    "winsAgainst": 0,
+    "losesAgainst": 2
+  },
+  "scissors": {
+    "name": "Scissors",
+    "id": 2,
+    "forms": ["scissors", "Scissors", "SCISSORS", "s", "S"],
+    "winsAgainst": 1,
+    "losesAgainst": 2
+  }
+}
