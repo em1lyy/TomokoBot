@@ -375,6 +375,24 @@ bot.registerCommand("servers", (message, args) => { // Displays every server Tom
     "cooldownReturns": 3
 });
 
+bot.registerCommand("addfriend", (message, args) => { // Command to reboot Tomoko
+    if (args.length === 1) {
+        if (message.author.id === config.ownerId) {
+            logInfo("Sending friend request to <@!" + args[0] + "> .");
+            bot.addRelationship(args[0], false);
+        } else {
+            noPermission(message, message.author, message.content.split(" ")[0]);
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 12000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 3
+});
+
 bot.registerCommand("testperm", (message, args) => { // Command to test the noperm and the invalid args message.
     if (args.length === 0) {
         noPermission(message, message.author, message.content.split(" ")[0]);
