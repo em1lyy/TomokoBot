@@ -787,21 +787,41 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                     }
 
                     if (duration >= config.maxSongDuration) {
-                        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Tomoko's Music Player",
-                                                "description": "W-Whoa! T-That's a pretty l-long song, d-don't you think?\nM-Maybe you should t-try again with a s-song that i-is shorter t-than **10 m-minutes**.",
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": bot.user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
+                        if (message.author.id === config.ownerId) {
+                            if (duration >= config.maxOwnerSongDuration) {
+                                bot.createMessage(message.channel.id, {
+                                                    "embed": {
+                                                        "title": "Tomoko's Music Player",
+                                                        "description": "W-Whoa! T-That's a pretty l-long song, d-don't you think?\nM-Maybe you should t-try again with a s-song that i-is shorter t-than **10 m-minutes**.",
+                                                        "color": 16684873,
+                                                        "thumbnail": {
+                                                            "url": bot.user.avatarURL
+                                                        },
+                                                        "author": {
+                                                            "name": "Tomoko Bot",
+                                                            "icon_url": bot.user.avatarURL
+                                                        }
+                                                    }
+                                                   });
+                                return;
+                            }
+                        } else {
+                            bot.createMessage(message.channel.id, {
+                                                "embed": {
+                                                    "title": "Tomoko's Music Player",
+                                                    "description": "W-Whoa! T-That's a pretty l-long song, d-don't you think?\nM-Maybe you should t-try again with a s-song that i-is shorter t-than **10 m-minutes**.",
+                                                    "color": 16684873,
+                                                    "thumbnail": {
+                                                        "url": bot.user.avatarURL
+                                                    },
+                                                    "author": {
+                                                        "name": "Tomoko Bot",
+                                                        "icon_url": bot.user.avatarURL
+                                                    }
                                                 }
-                                            }
-                                           });
-                        return;
+                                               });
+                            return;
+                        }
                     }
 
                     var highestBitrate = 0;

@@ -3,6 +3,7 @@
     "outputChannelId": "485769031387709441",
     "guildUpdateChannelId": "487900509341089793",
     "maxSongDuration": 660,
+    "maxOwnerSongDuration": 3840,
     "shardCount":  3,
     "maxBitRate": "129",
     "ownerId": "398116585753280534"
