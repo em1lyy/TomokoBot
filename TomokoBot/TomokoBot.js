@@ -1,7 +1,7 @@
 /**
  *
  * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
- * Copyright (C) 2018 Jonas Jaguar <jonasjaguar@jagudev.net>
+ * Copyright (C) 2018-2019 Jonas Jaguar <jonasjaguar@jagudev.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
