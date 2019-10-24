@@ -3145,8 +3145,14 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     logger.info("Join event called!"); // Log "Join event called!",
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
     logger.info("User name: " + member.username); // and the username
-    var welcomeMsgId = Math.floor(Math.random() * messages.welcome.length); // Generate a random number
-    bot.createMessage(guild.systemChannelID, messages.welcome[welcomeMsgId]); // Send a random welcome message
+    bot.createMessage(guild.systemChannelID, messages.welcome.replace("$user", member.mention).replace("$guild", guild.name)); // Send a welcome message
+});
+
+bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the server
+    logger.info("Leave event called!"); // Log "Leave event called!",
+    logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
+    logger.info("User name: " + member.username); // and the username
+    bot.createMessage(guild.systemChannelID, messages.bye.replace("$user", member.mention)); // Send a goodbye message
 });
 
 bot.on("guildCreate", (guild) => { // On a new guild
