@@ -2620,7 +2620,7 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
  *
 **/
 
-async function askTheEightBall(sender, channelId, question) {
+/*async function askTheEightBall(sender, channelId, question) {
     var answer = await neko.sfw.8Ball(question);
     logger.info(answer);
     bot.createMessage(channelId, {
@@ -2651,7 +2651,7 @@ bot.registerCommand("8ball", (message, args) => { // Command to aks the 8ball so
     "cooldown": 4000,
     "cooldownMessage": messages.cooldown,
     "cooldownReturns": 4
-});
+});*/
 
 async function fact(sender, channelId) {
     var fact = await neko.sfw.fact();

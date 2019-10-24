@@ -13,7 +13,7 @@
                 "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume`"
             },
             {
-                "name": ":speech_balloon: Action commands", 
+                "name": ":speech_balloon: Action commands",
                 "value": "`pat` `hug` `kiss` `slap` `tickle` `cuddle` `meow` `poke` `smug` `baka` `feed` `neko` `nekogif` `foxgirl` `kemonomimi`"
             },
             {
@@ -22,7 +22,7 @@
             },
             {
                 "name": ":space_invader: Fun commands",
-                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
+                "value": "`8ball (currently doesn't work)` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
             },
             {
                 "name": ":oncoming_police_car: Moderation commands",
