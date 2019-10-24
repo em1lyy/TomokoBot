@@ -1,14 +1,14 @@
 {
     "name": "TomokoBot",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! ",
     "main": "TomokoBot.js",
     "author": "Jonas Jaguar",
     "dependencies": {
-        "eris": "^0.9.0",
-        "nekos.life": "^1.1.4",
-        "node-fetch": "^2.2.0",
-        "winston": "^3.1.0",
-        "youtube-dl": "^1.12.2"
+        "eris": "0.11.0",
+        "nekos.life": "2.0.4",
+        "node-fetch": "2.6.0",
+        "winston": "3.2.1",
+        "youtube-dl": "2.0.1"
     }
 }
