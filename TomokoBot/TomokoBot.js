@@ -375,7 +375,7 @@ bot.registerCommand("servers", (message, args) => { // Displays every server Tom
     "cooldownReturns": 3
 });
 
-bot.registerCommand("addfriend", (message, args) => { // Command to reboot Tomoko
+bot.registerCommand("addfriend", (message, args) => { // Command that was initially though to add a friend, but sadly doesn't work
     if (args.length === 1) {
         if (message.author.id === config.ownerId) {
             logInfo("Sending friend request to <@!" + args[0] + "> .");
