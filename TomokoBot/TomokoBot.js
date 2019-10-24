@@ -149,7 +149,7 @@ function getUserName(member) {
 }
 
 async function chat(channelId, message) {
-    var chat = await neko.getSFWChat({ text: message });
+    var chat = await neko.sfw.chat({ text: message });
     logger.info(chat);
     bot.createMessage(channelId, ":speech_balloon: " + chat.response); // Send a message with the response
 }
@@ -1861,7 +1861,7 @@ bot.registerCommand("volume", (message, args) => { // Volume command
 **/
 
 async function pat(sender, target, channelId) {
-    var pat = await neko.getSFWPat();
+    var pat = await neko.sfw.pat();
     logger.info(pat);
     bot.createMessage(channelId, {
         "embed": {
@@ -1905,7 +1905,7 @@ bot.registerCommand("pat", (message, args) => { // Pat command
 
 
 async function hug(sender, target, channelId) {
-    var hug = await neko.getSFWHug();
+    var hug = await neko.sfw.hug();
     logger.info(hug);
     bot.createMessage(channelId, {
         "embed": {
@@ -1949,7 +1949,7 @@ bot.registerCommand("hug", (message, args) => { // Hug Command
 
 
 async function kiss(sender, target, channelId) {
-    var kiss = await neko.getSFWKiss();
+    var kiss = await neko.sfw.kiss();
     logger.info(kiss);
     bot.createMessage(channelId, {
         "embed": {
@@ -1993,7 +1993,7 @@ bot.registerCommand("kiss", (message, args) => { // Kiss Command
 
 
 async function slap(sender, target, channelId) {
-    var slap = await neko.getSFWSlap();
+    var slap = await neko.sfw.slap();
     logger.info(slap);
     bot.createMessage(channelId, {
         "embed": {
@@ -2037,7 +2037,7 @@ bot.registerCommand("slap", (message, args) => { // Slap Command
 
 
 async function tickle(sender, target, channelId) {
-    var tickle = await neko.getSFWTickle();
+    var tickle = await neko.sfw.tickle();
     logger.info(tickle);
     bot.createMessage(channelId, {
         "embed": {
@@ -2081,7 +2081,7 @@ bot.registerCommand("tickle", (message, args) => { // Tickle Command
 
 
 async function cuddle(sender, target, channelId) {
-    var cuddle = await neko.getSFWCuddle();
+    var cuddle = await neko.sfw.cuddle();
     logger.info(cuddle);
     bot.createMessage(channelId, {
         "embed": {
@@ -2125,7 +2125,7 @@ bot.registerCommand("cuddle", (message, args) => { // Cuddle Command
 
 
 async function meow(sender, channelId) {
-    var meow = await neko.getSFWMeow();
+    var meow = await neko.sfw.meow();
     logger.info(meow);
     bot.createMessage(channelId, {
         "embed": {
@@ -2161,7 +2161,7 @@ bot.registerCommand("meow", (message, args) => { // Meow Command
 
 
 async function poke(sender, target, channelId) {
-    var poke = await neko.getSFWPoke();
+    var poke = await neko.sfw.poke();
     logger.info(poke);
     bot.createMessage(channelId, {
         "embed": {
@@ -2205,7 +2205,7 @@ bot.registerCommand("poke", (message, args) => { // Poke Command
 
 
 async function smug(sender, channelId) {
-    var smug = await neko.getSFWSmug();
+    var smug = await neko.sfw.smug();
     logger.info(smug);
     bot.createMessage(channelId, {
         "embed": {
@@ -2241,7 +2241,7 @@ bot.registerCommand("smug", (message, args) => { // Smug Command
 
 
 async function baka(sender, channelId) {
-    var baka = await neko.getSFWBaka();
+    var baka = await neko.sfw.baka();
     logger.info(baka);
     bot.createMessage(channelId, {
         "embed": {
@@ -2277,7 +2277,7 @@ bot.registerCommand("baka", (message, args) => { // Baka Command
 
 
 async function feed(sender, target, channelId) {
-    var feed = await neko.getSFWFeed();
+    var feed = await neko.sfw.feed();
     logger.info(feed);
     bot.createMessage(channelId, {
         "embed": {
@@ -2321,7 +2321,7 @@ bot.registerCommand("feed", (message, args) => { // Feed Command
 
 
 async function f_neko(sender, channelId) {
-    var i_neko = await neko.getSFWNeko();
+    var i_neko = await neko.sfw.neko();
     logger.info(i_neko);
     bot.createMessage(channelId, {
         "embed": {
@@ -2357,7 +2357,7 @@ bot.registerCommand("neko", (message, args) => { // Neko Command
 
 
 async function nekogif(sender, channelId) {
-    var nekogif = await neko.getSFWNekoGif();
+    var nekogif = await neko.sfw.nekoGif();
     logger.info(nekogif);
     bot.createMessage(channelId, {
         "embed": {
@@ -2537,7 +2537,7 @@ bot.registerCommand("nekogif", (message, args) => { // NekoGIF Command
 });**/
 
 async function foxgirl(sender, channelId) {
-    var foxgirl = await neko.getSFWFoxGirl();
+    var foxgirl = await neko.sfw.foxGirl();
     logger.info(foxgirl);
     bot.createMessage(channelId, {
         "embed": {
@@ -2572,7 +2572,7 @@ bot.registerCommand("foxgirl", (message, args) => { // Fox girl Command
 });
 
 async function kemonomimi(sender, channelId) {
-    var kemonomimi = await neko.getSFWKemonomimi();
+    var kemonomimi = await neko.sfw.kemonomimi();
     logger.info(kemonomimi);
     bot.createMessage(channelId, {
         "embed": {
@@ -2621,7 +2621,7 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
 **/
 
 async function askTheEightBall(sender, channelId, question) {
-    var answer = await neko.getSFW8Ball(question);
+    var answer = await neko.sfw.8Ball(question);
     logger.info(answer);
     bot.createMessage(channelId, {
         "embed": {
@@ -2654,7 +2654,7 @@ bot.registerCommand("8ball", (message, args) => { // Command to aks the 8ball so
 });
 
 async function fact(sender, channelId) {
-    var fact = await neko.getSFWFact();
+    var fact = await neko.sfw.fact();
     logger.info(fact);
     bot.createMessage(channelId, {
         "embed": {
@@ -2826,7 +2826,7 @@ bot.registerCommand("rolldice", (message, args) => { // Roll a (virtual) dice
 bot.registerCommandAlias("dice", "rolldice"); // Register command alias for lazy people
 
 async function why(sender, channelId) {
-    var why = await neko.getSFWWhy();
+    var why = await neko.sfw.why();
     logger.info(why);
     bot.createMessage(channelId, {
         "embed": {
@@ -2859,7 +2859,7 @@ bot.registerCommand("why", (message, args) => { // Command to get a random fact
 });
 
 async function owo(sender, channelId, text) {
-    var owo = await neko.getSFWOwOify({ text: text });
+    var owo = await neko.sfw.OwOify({ text: text });
     logger.info(owo.owo);
     bot.createMessage(channelId, {
         "embed": {
