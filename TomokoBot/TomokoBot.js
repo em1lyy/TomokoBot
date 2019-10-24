@@ -3204,13 +3204,6 @@ bot.on("messageCreate", (message) => { // When a message is created
     } else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
          chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
     }
-    /**if (message.content == "*shutdown") { // Used for some little testing. Senseless.
-        if (message.member.permission.has("administrator")) {
-            message.channel.guild.shard.disconnect();
-        } else {
-            noPermission(message, message.author, message.content.split(" ")[0]);
-        }
-    }**/
 });
 
 // Get the bot to connect to Discord
