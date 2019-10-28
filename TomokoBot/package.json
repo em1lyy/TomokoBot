@@ -1,6 +1,6 @@
 {
     "name": "TomokoBot",
-    "version": "0.1.1",
+    "version": "0.1.3",
     "description": "Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! ",
     "main": "TomokoBot.js",
     "author": "Jonas Jaguar",
