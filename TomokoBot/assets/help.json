@@ -33,6 +33,10 @@
                 "value": "`remindme` `birthday` `time` `wikipedia` `choose` `weather`"
             },
             {
+                "name": ":warning: Testing version",
+                "value": "This i-is still a v-very, very e-early version of m-me, features might n-not work or miss c-completely.\nI-If that i-is the case, j-just be p-patient."
+            },
+            {
                 "name": ":handshake: Support",
                 "value": "If y-you need further S-Support, please j-join [my Discord Server](https://discord.gg/EK9F28B).\nFor m-more information about a c-command, u-use `help <command>`. B-Before commands, a-always set a `*`."
             }
