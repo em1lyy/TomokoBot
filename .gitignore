@@ -1,4 +1,7 @@
-node_modules
+node_modules/
 auth.json
-TomokoBot/node_modules
+TomokoBot/node_modules/
 TomokoBot/auth.json
+TomokoBot/nohup.out
+TomokoBot/logs/full/
+TomokoBot/logs/error/
