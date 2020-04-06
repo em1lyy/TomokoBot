@@ -32,6 +32,7 @@ const rpsData = require("./assets/rps.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
 const fetch = require("node-fetch");
+const Canvas = require('canvas');
 
 // Get current timestamp
 var logStamp = Date.now();
@@ -225,6 +226,23 @@ function warnEveryone(message, user, command) { // A function that tells the use
         }
     }); // Send a "Please don't use @everyone/@here" message.
 }
+
+// Canvas text thing
+const applyText = (canvas, text, margin) => {
+	const ctx = canvas.getContext('2d');
+
+	// Declare a base size of the font
+	let fontSize = 140;
+
+	do {
+		// Assign the font to the context and decrement it so it can be measured again
+		ctx.font = `${fontSize -= 10}px sans-serif`;
+		// Compare pixel width of the text to the canvas minus the approximate avatar size
+	} while (ctx.measureText(text).width > canvas.width - margin);
+
+	// Return the result to use in the actual canvas
+	return ctx.font;
+};
 
 function refreshUptime() { // A function to refresh the uptime variables
     uptimeH = Math.floor(bot.uptime / 60 / 60 / 1000);
@@ -515,8 +533,24 @@ bot.registerCommand("avatar", (message, args) => { // Command to get the avatar 
                                             }
                                            }); // Send a message with the avatar as embed.
         } else {
-            invalidArgs(message, message.author, message.content.split(" ")[0]);
-            return;
+            bot.createMessage(message.channel.id, {
+                                            "embed": {
+                                                "title": "Avatar for " + message.author.username + ":",
+                                                "description": "[Avatar URL Link](" + message.author.avatarURL + ")",
+                                                "color": 16684873,
+                                                "author": {
+                                                    "name": "Tomoko Bot",
+                                                    "icon_url": bot.user.avatarURL
+                                                },
+                                                "image": {
+                                                    "url": message.author.avatarURL
+                                                },
+                                                "footer": {
+                                                    "icon_url": message.author.avatarURL,
+                                                    "text": "Requested by: " + getUserName(message.member)
+                                                }
+                                            }
+                                           }); // Send a message with the avatar as embed.
         }
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
@@ -3145,7 +3179,40 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     logger.info("Join event called!"); // Log "Join event called!",
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
     logger.info("User name: " + member.username); // and the username
-    bot.createMessage(guild.systemChannelID, messages.welcome.replace("$user", member.mention).replace("$guild", guild.name)); // Send a welcome message
+
+    const channel = guild.systemChannelID;
+    if (!channel) return;
+
+    const canvas = Canvas.createCanvas(1400, 500);
+    const ctx = canvas.getContext('2d');
+
+    const background = await Canvas.loadImage('./assets/join_bg.jpg');
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = '#333333';
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // Slightly smaller text placed above the member's display name
+    ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 800);
+    ctx.fillStyle = '#eeeeee';
+    ctx.fillText(messages.welcome.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
+
+    // Add an exclamation point here and below
+    ctx.font = applyText(canvas, `${member.username}!`, 600);
+    ctx.fillStyle = '#eeeeee';
+    ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
+
+    ctx.beginPath();
+    ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.clip();
+
+    const avatar = await Canvas.loadImage(member.avatarURL);
+    ctx.drawImage(avatar, 25, 25, 200, 200);
+
+    const attachment = { canvas.toBuffer(), 'welcome-image.png' };
+
+    bot.createMessage(channel, messages.welcome.replace("$guild", guild.name).replace("$user", member.username), attachment); // Send a welcome message
 });
 
 bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the server

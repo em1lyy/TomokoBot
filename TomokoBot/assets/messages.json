@@ -1,5 +1,6 @@
 {
     "welcome":"H-Hi $user, welcome t-to $guild!",
+    "welcome_display":"W-Welcome to $guild,",
     "bye": "B-Bye, $user! It's sad t-to see you g-go",
     "mention":["...W-What? Y-You mentioned me?", "W-What do you want?", "Eek! Oh, i-it's j-just you, $user. I was a b-bit scared.", "$user? I-Is that y-you?", "W-What's up?", "F-For help, please u-use `*help`, $user"],
     "noperm":"S-Sorry $user, but you d-don't have the required p-permission to run `$command`.\nIf you t-think that this is an error, you m-may contact the s-server owner",
