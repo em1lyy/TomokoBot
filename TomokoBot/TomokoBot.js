@@ -3183,7 +3183,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     const channel = guild.systemChannelID;
     if (!channel) return;
 
-    const canvas = Canvas.createCanvas(1400, 500);
+    const canvas = Canvas.createCanvas(700, 250);
     const ctx = canvas.getContext('2d');
 
     Canvas.loadImage('./assets/join_bg.jpg').then((background) => {
@@ -3193,12 +3193,12 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
-        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 800);
+        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 350);
         ctx.fillStyle = '#eeeeee';
-        ctx.fillText(messages.welcome.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
+        ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
-        ctx.font = applyText(canvas, `${member.username}!`, 600);
+        ctx.font = applyText(canvas, `${member.username}!`, 300);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
@@ -3212,7 +3212,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
 
             const attachment = { file: canvas.toBuffer(), name: 'welcome-image.png' };
 
-            bot.createMessage(channel, messages.welcome.replace("$guild", guild.name).replace("$user", member.username), attachment); // Send a welcome message
+            bot.createMessage(channel, messages.welcome.replace("$guild", guild.name).replace("$user", member.mention), attachment); // Send a welcome message
         });
     });
 });
