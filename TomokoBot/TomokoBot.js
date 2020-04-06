@@ -3210,7 +3210,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         const avatar = Canvas.loadImage(member.avatarURL).then((avatar) => {
             ctx.drawImage(avatar, 25, 25, 200, 200);
 
-            const attachment = { canvas.toBuffer(), 'welcome-image.png' };
+            const attachment = { file: { file: canvas.toBuffer(), name: 'welcome-image.png' } };
 
             bot.createMessage(channel, messages.welcome.replace("$guild", guild.name).replace("$user", member.username), attachment); // Send a welcome message
         });
