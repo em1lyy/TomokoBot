@@ -3193,7 +3193,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
-        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 200);
+        ctx.font = applyText(canvas, messages.welcome_display.replace("$guild", guild.name), 200);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
@@ -3221,7 +3221,42 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
     logger.info("Leave event called!"); // Log "Leave event called!",
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
     logger.info("User name: " + member.username); // and the username
-    bot.createMessage(guild.systemChannelID, messages.bye.replace("$user", member.mention)); // Send a goodbye message
+
+    const channel = guild.systemChannelID;
+    if (!channel) return;
+
+    const canvas = Canvas.createCanvas(700, 250);
+    const ctx = canvas.getContext('2d');
+
+    Canvas.loadImage('./assets/join_bg.jpg').then((background) => {
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = '#333333';
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+        // Slightly smaller text placed above the member's display name
+        ctx.font = applyText(canvas, messages.bye_display.replace("$guild", guild.name), 200);
+        ctx.fillStyle = '#eeeeee';
+        ctx.fillText(messages.bye_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
+
+        // Add an exclamation point here and below
+        ctx.font = applyText(canvas, `${member.username}!`, 250);
+        ctx.fillStyle = '#eeeeee';
+        ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
+
+        ctx.beginPath();
+        ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.clip();
+
+        const avatar = Canvas.loadImage(member.avatarURL).then((avatar) => {
+            ctx.drawImage(avatar, 25, 25, 200, 200);
+
+            const attachment = { file: canvas.toBuffer(), name: 'goodbye-image.png' };
+
+            bot.createMessage(channel, messages.bye.replace("$guild", guild.name).replace("$user", member.mention), attachment); // Send a welcome message
+        });
+    });
 });
 
 bot.on("guildCreate", (guild) => { // On a new guild
