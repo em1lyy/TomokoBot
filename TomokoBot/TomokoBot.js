@@ -3198,7 +3198,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
-        ctx.font = applyText(canvas, `${member.username}!`, 250);
+        ctx.font = applyText(canvas, `${member.username}!`, 300);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
@@ -3240,7 +3240,7 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
         ctx.fillText(messages.bye_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
-        ctx.font = applyText(canvas, `${member.username}!`, 250);
+        ctx.font = applyText(canvas, `${member.username}!`, 300);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
