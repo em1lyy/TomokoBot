@@ -32,7 +32,7 @@ const rpsData = require("./assets/rps.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
 const fetch = require("node-fetch");
-const Canvas = require('canvas');
+const Canvas = require("canvas");
 
 // Get current timestamp
 var logStamp = Date.now();
@@ -229,7 +229,7 @@ function warnEveryone(message, user, command) { // A function that tells the use
 
 // Canvas text thing
 const applyText = (canvas, text, margin) => {
-	const ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext("2d");
 
 	// Declare a base size of the font
 	let fontSize = 70;
@@ -3184,22 +3184,22 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     if (!channel) return;
 
     const canvas = Canvas.createCanvas(700, 250);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    Canvas.loadImage('./assets/join_bg.jpg').then((background) => {
+    Canvas.loadImage("./assets/join_bg.jpg").then((background) => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        ctx.strokeStyle = '#333333';
+        ctx.strokeStyle = "#333333";
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
         ctx.font = applyText(canvas, messages.welcome_display.replace("$guild", guild.name), 300);
-        ctx.fillStyle = '#eeeeee';
+        ctx.fillStyle = "#eeeeee";
         ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
         ctx.font = applyText(canvas, `${member.username}!`, 300);
-        ctx.fillStyle = '#eeeeee';
+        ctx.fillStyle = "#eeeeee";
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
         ctx.beginPath();
@@ -3210,7 +3210,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         const avatar = Canvas.loadImage(member.avatarURL).then((avatar) => {
             ctx.drawImage(avatar, 25, 25, 200, 200);
 
-            const attachment = { file: canvas.toBuffer(), name: 'welcome-image.png' };
+            const attachment = { file: canvas.toBuffer(), name: "welcome-image.png" };
 
             bot.createMessage(channel, messages.welcome.replace("$guild", guild.name).replace("$user", member.mention), attachment); // Send a welcome message
         });
@@ -3226,22 +3226,22 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
     if (!channel) return;
 
     const canvas = Canvas.createCanvas(700, 250);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    Canvas.loadImage('./assets/join_bg.jpg').then((background) => {
+    Canvas.loadImage("./assets/join_bg.jpg").then((background) => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        ctx.strokeStyle = '#333333';
+        ctx.strokeStyle = "#333333";
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
         ctx.font = applyText(canvas, messages.bye_display.replace("$guild", guild.name), 300);
-        ctx.fillStyle = '#eeeeee';
+        ctx.fillStyle = "#eeeeee";
         ctx.fillText(messages.bye_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
         ctx.font = applyText(canvas, `${member.username}!`, 300);
-        ctx.fillStyle = '#eeeeee';
+        ctx.fillStyle = "#eeeeee";
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
         ctx.beginPath();
@@ -3252,7 +3252,7 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
         const avatar = Canvas.loadImage(member.avatarURL).then((avatar) => {
             ctx.drawImage(avatar, 25, 25, 200, 200);
 
-            const attachment = { file: canvas.toBuffer(), name: 'goodbye-image.png' };
+            const attachment = { file: canvas.toBuffer(), name: "goodbye-image.png" };
 
             bot.createMessage(channel, messages.bye.replace("$guild", guild.name).replace("$user", member.mention), attachment); // Send a welcome message
         });
