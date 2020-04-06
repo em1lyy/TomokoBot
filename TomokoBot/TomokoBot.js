@@ -232,7 +232,7 @@ const applyText = (canvas, text, margin) => {
 	const ctx = canvas.getContext('2d');
 
 	// Declare a base size of the font
-	let fontSize = 140;
+	let fontSize = 70;
 
 	do {
 		// Assign the font to the context and decrement it so it can be measured again
@@ -3193,7 +3193,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
-        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 350);
+        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 300);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
