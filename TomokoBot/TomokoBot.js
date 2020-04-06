@@ -236,7 +236,7 @@ const applyText = (canvas, text, margin) => {
 
 	do {
 		// Assign the font to the context and decrement it so it can be measured again
-		ctx.font = `${fontSize -= 10}px sans-serif`;
+		ctx.font = `${fontSize -= 4}px sans-serif`;
 		// Compare pixel width of the text to the canvas minus the approximate avatar size
 	} while (ctx.measureText(text).width > canvas.width - margin);
 
