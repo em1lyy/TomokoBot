@@ -3193,12 +3193,12 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         // Slightly smaller text placed above the member's display name
-        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 300);
+        ctx.font = applyText(canvas, messages.welcome.replace("$guild", guild.name), 200);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(messages.welcome_display.replace("$guild", guild.name), canvas.width / 2.5, canvas.height / 3.5);
 
         // Add an exclamation point here and below
-        ctx.font = applyText(canvas, `${member.username}!`, 300);
+        ctx.font = applyText(canvas, `${member.username}!`, 250);
         ctx.fillStyle = '#eeeeee';
         ctx.fillText(`${member.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
