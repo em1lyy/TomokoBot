@@ -1,7 +1,7 @@
 /**
  *
  * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
- * Copyright (C) 2018-2019 Jonas Jaguar <jonasjaguar@jagudev.net>
+ * Copyright (C) 2018-2020 Jonas Jaguar <jonasjaguar@jagudev.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,8 +150,9 @@ function getUserName(member) {
 }
 
 async function chat(channelId, message) {
-    var chat = await neko.sfw.chat({ text: message });
-    logger.info(chat);
+    // var chat = await neko.sfw.chat({ text: message });
+    var chat = { response: "The chat feature has been deprecated and removed from the nekos.life API." }
+    // logger.info(chat);
     bot.createMessage(channelId, ":speech_balloon: " + chat.response); // Send a message with the response
 }
 
@@ -2957,11 +2958,11 @@ bot.registerCommand("lovemeter", (message, args) => { // LOVEMETER 3000 PRO 2.0
     var comment = "Oh, if you can see this, an error occured, lol.";
     if (love < 20) {
         comment = "Wow, you two should stay away from each other...";
-    } else if (love < 45) {
+    } else if (love < 40) {
         comment = "Not so good.";
-    } else if (love < 62) {
+    } else if (love < 60) {
         comment = "Kinda good, but far from perfect.";
-    } else if (love < 80) {
+    } else if (love < 90) {
         comment = "Pretty good, this could be worth a try.";
     } else if (love > 89) {
         comment = "A Real love!";
@@ -3060,7 +3061,7 @@ bot.registerCommand("anime", (message, args) => { // Command to get info about a
             console.log(data.data.Page.pageInfo);
             console.log(data.data.Page.media);
 
-        }).catch((err) => { logError(err, message.member.shard.id); });
+        }).catch((err) => { logError(err, message.member.guild.shard.id); });
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
@@ -3129,13 +3130,13 @@ bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
         }
         var message = "Whoops. Something went wrong here, sorry.";
         if (iWon === true) {
-          message = "I win!"
+          message = "I win!";
         }
         if (userWon === true) {
-          message = "You win!"
+          message = "You win!";
         }
         if (tie === true) {
-          message = "It's a tie!"
+          message = "It's a tie!";
         }
         bot.createMessage(message.channel.id, {
                                             "embed": {
@@ -3233,6 +3234,7 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
 
         ctx.strokeStyle = "#333333";
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 
         // Slightly smaller text placed above the member's display name
         ctx.font = applyText(canvas, messages.bye_display.replace("$guild", guild.name), 300);
@@ -3306,7 +3308,7 @@ bot.on("messageCreate", (message) => { // When a message is created
         var mentionMsgId = Math.floor(Math.random() * messages.mention.length); // Generate a random number
         bot.createMessage(message.channel.id, messages.mention[mentionMsgId].replace("$user", message.author.mention)); // Send a random mention message
     } else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
-         chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
+        chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
     }
 });
 
