@@ -5,11 +5,11 @@
     "main": "TomokoBot.js",
     "author": "Jonas Jaguar",
     "dependencies": {
+        "canvas": "2.6.1",
         "eris": "0.11.0",
         "nekos.life": "2.0.4",
         "node-fetch": "2.6.0",
         "winston": "3.2.1",
-        "youtube-dl": "2.0.1",
-        "canvas": "2.6.1"
+        "youtube-dl": "^3.0.2"
     }
 }

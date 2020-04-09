@@ -879,6 +879,13 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                         }
                     }
 
+                    var bestFormatUrl = bestFormat.url;
+                    if (bestFormat.fragment_base_url) {
+                        logger.info("Other video type detected, falling back to fragment base URL");
+                        bestFormatUrl = bestFormat.fragment_base_url;
+                    }
+                    logger.info("Best format audio URL: " + bestFormatUrl);
+
                     bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
@@ -895,7 +902,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                                            });
 
                     guild.queue.push({
-                        "url": bestFormat.url,
+                        "url": bestFormatUrl,
                         "ytUrl": "youtube.com/watch?v=" + info.id,
                         "title": info.title,
                         "thumbnail": info.thumbnail,
