@@ -983,7 +983,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
             var guild = musicGuilds.get(message.member.guild.id);
             if (args[0] === "jpop" || args[0] === "Jpop" || args[0] === "JPop" || args[0] === "j" || args[0] === "J" || args[0] === "JPOP") {
                 guild.queue.push({
-                    "url": "https://listen.moe/opus",
+                    "url": "https://listen.moe/stream",
                     "ytUrl": "https://listen.moe",
                     "title": "LISTEN.moe JPop",
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon.png",
@@ -994,7 +994,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                 }
                 guild.queue = [];
                 guild.queue.push({
-                    "url": "https://listen.moe/opus",
+                    "url": "https://listen.moe/stream",
                     "ytUrl": "https://listen.moe",
                     "title": "LISTEN.moe JPop",
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon.png",
@@ -1003,7 +1003,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                 guild.connection.play(guild.queue[0].url);
             } else if (args[0] === "kpop" || args[0] === "Kpop" || args[0] === "KPop" || args[0] === "k" || args[0] === "K" || args[0] === "KPOP") {
                 guild.queue.push({
-                    "url": "https://listen.moe/kpop/opus",
+                    "url": "https://listen.moe/kpop/stream",
                     "ytUrl": "https://listen.moe/kpop",
                     "title": "LISTEN.moe KPop",
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon-kpop.png",
@@ -1014,7 +1014,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                 }
                 guild.queue = [];
                 guild.queue.push({
-                    "url": "https://listen.moe/kpop/opus",
+                    "url": "https://listen.moe/kpop/stream",
                     "ytUrl": "https://listen.moe/kpop",
                     "title": "LISTEN.moe KPop",
                     "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon-kpop.png",
@@ -1850,7 +1850,7 @@ bot.registerCommand("volume", (message, args) => { // Volume command
         if (musicGuilds.has(message.member.guild.id)) {
             var guild = musicGuilds.get(message.member.guild.id);
             var volume = parseFloat(args[0]);
-            if (isNaN(volume)) {
+            if (!isNaN(volume)) {
                 guild.connection.setVolume(volume);
                 bot.createMessage(message.channel.id, {
                                                         "embed": {
