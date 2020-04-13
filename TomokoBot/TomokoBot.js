@@ -930,6 +930,8 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                         guild.connection.play(daguild.queue[0].url);
                     }
 
+                    message.delete();
+
                 });
 
             } else {
