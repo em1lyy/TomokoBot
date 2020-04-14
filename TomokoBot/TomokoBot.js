@@ -1302,7 +1302,7 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
                                                     });
                     return;
                 }
-                guild.requiredSkipVotes = Math.ceil((bot.getChannel(guild.channelId)).voiceMembers.size / 2);
+                guild.requiredSkipVotes = Math.ceil((bot.getChannel(guild.channelID)).voiceMembers.size / 2);
                 if (guild.requiredSkipVotes >= 100) {
                     guild.requiredSkipVotes = 100;
                 }
@@ -1347,7 +1347,7 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
     "cooldownReturns": 4,
     "reactionButtons": [ // Add reaction buttons to the command
         {
-            "emoji": ":track_next:",
+            "emoji": "",
             "type": "edit",
             "response": (message) => { // Process the reaction
                 var votes = message.getReaction(":track_next:", 102).length;
@@ -3206,20 +3206,20 @@ bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
           userWon = true;
           tie = false;
         }
-        var message = "Whoops. Something went wrong here, sorry.";
+        var retmessage = "Whoops. Something went wrong here, sorry.";
         if (iWon === true) {
-          message = "I win!";
+          retmessage = "I win!";
         }
         if (userWon === true) {
-          message = "You win!";
+          retmessage = "You win!";
         }
         if (tie === true) {
-          message = "It's a tie!";
+          retmessage = "It's a tie!";
         }
         bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's RPS",
-                                                "description": "I'm choosing **" + iChose.name + "**! " + message,
+                                                "description": "I'm choosing **" + iChose.name + "**! " + retmessage,
                                                 "color": 16684873,
                                                 "author": {
                                                     "name": "Tomoko Bot",
