@@ -977,7 +977,76 @@ playCmd.registerSubcommand("yturl", (message, args) => {
 });
 
 playCmd.registerSubcommandAlias("youtube", "yturl");
-playCmd.registerSubcommandAlias("url", "yturl");
+
+// User supplied input is dangerous, never trust it!
+// Because of that, only the bot owner can play custom streams
+playCmd.registerSubcommand("url", (message, args) => {
+    if (args.length === 1) {
+        if (musicGuilds.has(message.member.guild.id)) {
+            if (message.author.id === config.ownerId) {
+                var guild = musicGuilds.get(message.member.guild.id);
+                guild.queue.push({
+                    "url": args[0],
+                    "ytUrl": args[0],
+                    "title": "Custom URL Stream",
+                    "thumbnail": bot.user.avatarURL,
+                    "duration": "Pretty long I guess"
+                });
+                if (guild.connection.playing) {
+                    guild.connection.stopPlaying();
+                }
+                guild.queue = [];
+                guild.queue.push({
+                    "url": args[0],
+                    "ytUrl": args[0],
+                    "title": "Custom URL Stream",
+                    "thumbnail": bot.user.avatarURL,
+                    "duration": "Pretty long I guess"
+                });
+                guild.connection.play(guild.queue[0].url);
+                clearTimeout(guild.leaveCountdown);
+                bot.createMessage(message.channel.id, {
+                                        "embed": {
+                                            "title": "Tomoko's Music Player",
+                                            "description": ":loud_sound: N-Now playing: **" + guild.queue[0].title + "**",
+                                            "color": 16684873,
+                                            "thumbnail": {
+                                                "url": guild.queue[0].thumbnail
+                                            },
+                                            "author": {
+                                                "name": "Tomoko Bot",
+                                                "icon_url": bot.user.avatarURL
+                                            }
+                                        }
+                                    });
+            } else {
+                noPermission(message, message.author, message.content.split(" ")[0]);
+            }
+        } else {
+            bot.createMessage(message.channel.id, {
+                                        "embed": {
+                                            "title": "Tomoko's Music Player",
+                                            "description": "I'm n-not in y-your voice channel!\nP-Please use `join`!",
+                                            "color": 16684873,
+                                            "thumbnail": {
+                                                "url": bot.user.avatarURL
+                                            },
+                                            "author": {
+                                                "name": "Tomoko Bot",
+                                                "icon_url": bot.user.avatarURL
+                                            }
+                                        }
+                                        });
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
 
 playCmd.registerSubcommand("listenmoe", (message, args) => {
     if (args.length === 1) {
@@ -988,7 +1057,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "url": "https://listen.moe/stream",
                     "ytUrl": "https://listen.moe",
                     "title": "LISTEN.moe JPop",
-                    "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon.png",
+                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
                     "duration": "Pretty long I guess"
                 });
                 if (guild.connection.playing) {
@@ -999,7 +1068,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "url": "https://listen.moe/stream",
                     "ytUrl": "https://listen.moe",
                     "title": "LISTEN.moe JPop",
-                    "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon.png",
+                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
                     "duration": "Pretty long I guess"
                 });
                 guild.connection.play(guild.queue[0].url);
@@ -1008,7 +1077,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "url": "https://listen.moe/kpop/stream",
                     "ytUrl": "https://listen.moe/kpop",
                     "title": "LISTEN.moe KPop",
-                    "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon-kpop.png",
+                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
                     "duration": "Pretty long I guess"
                 });
                 if (guild.connection.playing) {
@@ -1019,7 +1088,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     "url": "https://listen.moe/kpop/stream",
                     "ytUrl": "https://listen.moe/kpop",
                     "title": "LISTEN.moe KPop",
-                    "thumbnail": "https://listen.moe/public/images/icons/apple-touch-icon-kpop.png",
+                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
                     "duration": "Pretty long I guess"
                 });
                 guild.connection.play(guild.queue[0].url);
@@ -1056,7 +1125,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                                             }
                                         }
                                         });
-            }
+        }
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
