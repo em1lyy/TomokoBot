@@ -1347,10 +1347,10 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
     "cooldownReturns": 4,
     "reactionButtons": [ // Add reaction buttons to the command
         {
-            "emoji": "",
+            "emoji": "⏭",
             "type": "edit",
             "response": (message) => { // Process the reaction
-                var votes = message.getReaction(":track_next:", 102).length;
+                var votes = message.getReaction("⏭", 102).length;
                 var guild = musicGuilds.get(message.member.guild.id);
                 if (votes >= (guild.requiredSkipVotes + 1)) {
                     if (guild.connection.playing) {
