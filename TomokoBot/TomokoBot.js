@@ -1303,8 +1303,8 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
                     return;
                 }
                 guild.requiredSkipVotes = Math.ceil((bot.getChannel(guild.channelID)).voiceMembers.size / 2);
-                if (guild.requiredSkipVotes >= 100) {
-                    guild.requiredSkipVotes = 100;
+                if (guild.requiredSkipVotes >= 98) {
+                    guild.requiredSkipVotes = 98;
                 }
                 bot.createMessage(message.channel.id, {
                                                     "embed": {
@@ -1320,6 +1320,7 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
                                                         }
                                                     }
                                                 });
+                return "Votes required to skip: " + (guild.requiredSkipVotes + 1);
             } else {
                 bot.createMessage(message.channel.id, {
                                                     "embed": {
@@ -1349,37 +1350,40 @@ bot.registerCommand("skip", (message, args) => { // Command to skip the current 
         {
             "emoji": "⏭",
             "type": "edit",
-            "response": (message) => { // Process the reaction
-                var votes = message.getReaction("⏭", 102).length;
-                var guild = musicGuilds.get(message.member.guild.id);
-                if (votes >= (guild.requiredSkipVotes + 1)) {
-                    if (guild.connection.playing) {
-                        guild.connection.stopPlaying();
-                    } else if (guild.connection.paused) {
-                        guild.connection.resume();
-                        guild.connection.stopPlaying();
-                        guild.connection.pause();
-                    }
-                    guild.skipVotes = 0;
-                    guild.requiredSkipVotes = 1;
-                    bot.createMessage(message.channel.id, {
-                                                        "embed": {
-                                                            "title": "Tomoko's Music Player",
-                                                            "description": "S-Skipped the current t-track!",
-                                                            "color": 16684873,
-                                                            "thumbnail": {
-                                                                "url": bot.user.avatarURL
-                                                            },
-                                                            "author": {
-                                                                "name": "Tomoko Bot",
-                                                                "icon_url": bot.user.avatarURL
+            "response": (message, args, userID) => { // Process the reaction
+                message.getReaction("⏭", 100).then((votesArr) => {
+                    var votes = votesArr.length;
+                    var guild = musicGuilds.get(message.member.guild.id);
+                    if (votes >= (guild.requiredSkipVotes + 1)) {
+                        if (guild.connection.playing) {
+                            guild.connection.stopPlaying();
+                        } else if (guild.connection.paused) {
+                            guild.connection.resume();
+                            guild.connection.stopPlaying();
+                            guild.connection.pause();
+                        }
+                        guild.skipVotes = 0;
+                        guild.requiredSkipVotes = 1;
+                        bot.createMessage(message.channel.id, {
+                                                            "embed": {
+                                                                "title": "Tomoko's Music Player",
+                                                                "description": "S-Skipped the current t-track!",
+                                                                "color": 16684873,
+                                                                "thumbnail": {
+                                                                    "url": bot.user.avatarURL
+                                                                },
+                                                                "author": {
+                                                                    "name": "Tomoko Bot",
+                                                                    "icon_url": bot.user.avatarURL
+                                                                }
                                                             }
-                                                        }
-                                                    });
-                }
+                                                        });
+                    }
+                });
 
-                return message.content;
-            }
+                return "Votes required to skip: " + (guild.requiredSkipVotes + 1);
+            },
+            "filter": (msg, emoji, userID) => { return true; }
         }
     ],
     "reactionButtonTimeout": 30000
