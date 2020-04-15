@@ -1982,7 +1982,7 @@ async function pat(sender, target, channelId) {
     logger.info(pat);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been patted by **" + sender.nick + "**",
+            "title": "**" + target + "** you have been patted by **" + getUserName(sender) + "**",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -1993,7 +1993,7 @@ async function pat(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2026,7 +2026,7 @@ async function hug(sender, target, channelId) {
     logger.info(hug);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been hugged by **" + sender.nick + "** :heart:",
+            "title": "**" + target + "** you have been hugged by **" + getUserName(sender) + "** :heart:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2037,7 +2037,7 @@ async function hug(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2070,7 +2070,7 @@ async function kiss(sender, target, channelId) {
     logger.info(kiss);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been kissed by **" + sender.nick + "** :heart:",
+            "title": "**" + target + "** you have been kissed by **" + getUserName(sender) + "** :heart:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2081,7 +2081,7 @@ async function kiss(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2114,7 +2114,7 @@ async function slap(sender, target, channelId) {
     logger.info(slap);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been slapped by **" + sender.nick + "** :punch:",
+            "title": "**" + target + "** you have been slapped by **" + getUserName(sender) + "** :punch:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2125,7 +2125,7 @@ async function slap(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2158,7 +2158,7 @@ async function tickle(sender, target, channelId) {
     logger.info(tickle);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been tickled by **" + sender.nick + "** :joy:",
+            "title": "**" + target + "** you have been tickled by **" + getUserName(sender) + "** :joy:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2169,7 +2169,7 @@ async function tickle(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2202,7 +2202,7 @@ async function cuddle(sender, target, channelId) {
     logger.info(cuddle);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been cuddled by **" + sender.nick + "** :heart:",
+            "title": "**" + target + "** you have been cuddled by **" + getUserName(sender) + "** :heart:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2213,7 +2213,7 @@ async function cuddle(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2257,7 +2257,7 @@ async function meow(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2282,7 +2282,7 @@ async function poke(sender, target, channelId) {
     logger.info(poke);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been poked by **" + sender.nick + "** :eyes:",
+            "title": "**" + target + "** you have been poked by **" + getUserName(sender) + "** :eyes:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2293,7 +2293,7 @@ async function poke(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2337,7 +2337,7 @@ async function smug(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2373,7 +2373,7 @@ async function baka(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2398,7 +2398,7 @@ async function feed(sender, target, channelId) {
     logger.info(feed);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been feeded by **" + sender.nick + "** :fork_and_knife:",
+            "title": "**" + target + "** you have been feeded by **" + getUserName(sender) + "** :fork_and_knife:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2409,7 +2409,7 @@ async function feed(sender, target, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2453,7 +2453,7 @@ async function f_neko(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2489,7 +2489,7 @@ async function nekogif(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2669,7 +2669,7 @@ async function foxgirl(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2704,7 +2704,7 @@ async function kemonomimi(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the GIF as embed.
@@ -2751,7 +2751,7 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the answer as embed.
@@ -2784,7 +2784,7 @@ async function fact(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with a fact as embed.
@@ -2956,7 +2956,7 @@ async function why(sender, channelId) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with a fact as embed.
@@ -2989,7 +2989,7 @@ async function owo(sender, channelId, text) {
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + sender.nick
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with owoified text as embed
