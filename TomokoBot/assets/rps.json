@@ -18,6 +18,6 @@
     "id": 2,
     "forms": ["scissors", "Scissors", "SCISSORS", "s", "S"],
     "winsAgainst": 1,
-    "losesAgainst": 2
+    "losesAgainst": 0
   }
 }
