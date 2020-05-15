@@ -6,7 +6,7 @@
         "fields": [
             {
                 "name": ":star2: Core commands",
-                "value": "`help` `status` `invite` `aboutme` `support` `vote` `checkvote` `testperm`"
+                "value": "`help` `status` `reboot` `invite` `aboutme` `support` `vote` `checkvote` `testperm` `addfriend`"
             },
             {
                 "name": ":musical_note: Music commands",
@@ -51,6 +51,10 @@
             "usage": "status",
             "description": "Shows m-my current status."
         },
+        "reboot": {
+            "usage": "reboot",
+            "description": "Disconnects a-all shards and shuts m-me down,\nthen u-updates everything and then s-starts me again.\nBot o-owner only."
+        },
         "invite": {
             "usage": "invite",
             "description": "Sends y-you an invite w-which you can use t-to invite me to your server."
@@ -58,6 +62,10 @@
         "aboutme": {
             "usage": "aboutme",
             "description": "Shows s-some information a-about me."
+        },
+        "addfriend": {
+            "usage": "addfriend <@user>",
+            "description": "S-Sends a friend r-request.\nB-Bot owner only, only w-works on u-user accounts (Userbots a-are against t-the Discord ToS)."
         },
         "support": {
             "usage": "support",
@@ -118,7 +126,11 @@
         "volume": {
             "usage": "volume <vol>",
             "description": "Sets t-the volume.\n`vol` s-should be a n-number, e.g. `0.5`, `1.0`, `1.2`..."
+        },
+        "avatar": {
+            "usage": "avatar [userMention/uid:UserID]",
+            "description": "R-Returns avatar f-for the given user/u-userID.\nIf n-no user/userID is given, y-your own avatar will b-be returned."
         }
     },
-    "commandsWithHelp": ["help", "status", "invite", "aboutme", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume"]
+    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar"]
 }

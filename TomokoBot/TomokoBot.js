@@ -65,7 +65,8 @@ var bot = new Eris.CommandClient(auth.token,
                               "defaultImageSize": 512,
                               "autoreconnect": true,
                               "defaultImageFormat": "jpg",
-                              "maxShards": config.shardCount
+                              "maxShards": config.shardCount,
+                              "intents": 13955
                           },
                           {
                               "defaultHelpCommand": false,
@@ -533,18 +534,20 @@ bot.registerCommand("avatar", (message, args) => { // Command to get the avatar 
                                                 }
                                             }
                                            }); // Send a message with the avatar as embed.
-        } else {
+        } else if (args[0].startsWith("uid:")) {
+            var userUID = args[0].split("uid:")[1];
+            var userByUID = bot.users.find(user => user.id == userUID);
             bot.createMessage(message.channel.id, {
                                             "embed": {
-                                                "title": "Avatar for " + message.author.username + ":",
-                                                "description": "[Avatar URL Link](" + message.author.avatarURL + ")",
+                                                "title": "Avatar for " + userByUID.username + ":",
+                                                "description": "[Avatar URL Link](" + userByUID.avatarURL + ")",
                                                 "color": 16684873,
                                                 "author": {
                                                     "name": "Tomoko Bot",
                                                     "icon_url": bot.user.avatarURL
                                                 },
                                                 "image": {
-                                                    "url": message.author.avatarURL
+                                                    "url": userByUID.avatarURL
                                                 },
                                                 "footer": {
                                                     "icon_url": message.author.avatarURL,
@@ -552,10 +555,29 @@ bot.registerCommand("avatar", (message, args) => { // Command to get the avatar 
                                                 }
                                             }
                                            }); // Send a message with the avatar as embed.
+        } else {
+            invalidArgs(message, message.author, message.content.split(" ")[0]);
+            return;
         }
     } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-        return;
+        bot.createMessage(message.channel.id, {
+                                        "embed": {
+                                            "title": "Avatar for " + message.author.username + ":",
+                                            "description": "[Avatar URL Link](" + message.author.avatarURL + ")",
+                                            "color": 16684873,
+                                            "author": {
+                                                "name": "Tomoko Bot",
+                                                "icon_url": bot.user.avatarURL
+                                            },
+                                            "image": {
+                                                "url": message.author.avatarURL
+                                            },
+                                            "footer": {
+                                                "icon_url": message.author.avatarURL,
+                                                "text": "Requested by: " + getUserName(message.member)
+                                            }
+                                        }
+                                       }); // Send a message with the avatar as embed.
     }
 },
 {
