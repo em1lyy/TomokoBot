@@ -471,7 +471,7 @@ bot.registerCommand("status", (message, args) => {
                                                         },
                                                         {
                                                             "name": ":diamond_shape_with_a_dot_inside: This Shard Analytics",
-                                                            "value": "Guilds: **" + guildsInCurrentShard + "**\nShard ID: **" + message.member.guild.shard.id + "**\nUsers: **" + message.member.guild.members.size + "**",
+                                                            "value": "Guilds: **" + guildsInCurrentShard + "**\nShard ID: **" + message.member.guild.shard.id + "**\nUsers: **" + message.member.guild.memberCount + "**",
                                                             "inline": true
                                                         },
                                                         {
@@ -3372,7 +3372,7 @@ bot.on("guildCreate", (guild) => { // On a new guild
     bot.createMessage(config.guildUpdateChannelId, {
                                                 "embed": {
                                                     "title": "New Guild in Shard #" + guild.shard.id + "!",
-                                                    "description": "Name: **" + guild.name + "**\nMember Count: **" + guild.members.size + "**",
+                                                    "description": "Name: **" + guild.name + "**\nMember Count: **" + guild.memberCount + "**",
                                                     "color": 16684873,
                                                     "author": {
                                                         "name": "Tomoko Bot",
@@ -3392,7 +3392,7 @@ bot.on("guildDelete", (guild) => { // On a lost guild
     bot.createMessage(config.guildUpdateChannelId, {
                                                 "embed": {
                                                     "title": "Lost Guild in Shard #" + guild.shard.id + "!",
-                                                    "description": "Name: **" + guild.name + "**\nMember Count: **" + guild.members.size + "**",
+                                                    "description": "Name: **" + guild.name + "**\nMember Count: **" + guild.memberCount + "**",
                                                     "color": 16684873,
                                                     "author": {
                                                         "name": "Tomoko Bot",
