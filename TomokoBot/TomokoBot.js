@@ -831,16 +831,20 @@ playCmd.registerSubcommand("yturl", (message, args) => {
 
                     var duration = 0;
                     var thing = info.duration.split(":");
+                    var stringDuration = "";
 
                     if (thing.length === 3) {
                         duration += parseInt(thing[0] * 60 * 60, 10);
                         duration += parseInt(thing[1] * 60, 10);
                         duration += parseInt(thing[2], 10);
+                        stringDuration = "0".repeat(2 - thing[0].length) + thing[0] + ":" + "0".repeat(2 - thing[1].length) + thing[1] + ":" + "0".repeat(2 - thing[2].length) + thing[2];
                     } else if (thing.length === 2) {
                         duration += parseInt(thing[0] * 60, 10);
                         duration += parseInt(thing[1], 10);
+                        stringDuration = "0".repeat(2 - thing[0].length) + thing[0] + ":" + "0".repeat(2 - thing[1].length) + thing[1];
                     } else if (thing.length === 1) {
                         duration += parseInt(thing[0], 10);
+                        stringDuration = "00:" + "0".repeat(2 - parseInt(thing[0], 10).toString().length) + duration.toString();
                     }
 
                     if (duration >= config.maxSongDuration) {
@@ -928,7 +932,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
                         "ytUrl": "https://www.youtube.com/watch?v=" + info.id,
                         "title": info.title,
                         "thumbnail": info.thumbnail,
-                        "duration": info.duration
+                        "duration": stringDuration
                     });
 
                     if (guild.firstSong) {
