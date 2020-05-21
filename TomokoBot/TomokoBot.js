@@ -925,7 +925,7 @@ playCmd.registerSubcommand("yturl", (message, args) => {
 
                     guild.queue.push({
                         "url": bestFormatUrl,
-                        "ytUrl": "youtube.com/watch?v=" + info.id,
+                        "ytUrl": "https://www.youtube.com/watch?v=" + info.id,
                         "title": info.title,
                         "thumbnail": info.thumbnail,
                         "duration": info.duration
