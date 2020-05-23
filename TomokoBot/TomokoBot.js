@@ -2767,11 +2767,10 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
 function askTheEightBall(sender, channelId, question) {
     // var answer = await neko.sfw.8Ball(question);
     var answer = eightBall.responses[Math.floor(Math.random() * eightBall.responses.length)];
-    logger.info(answer);
     bot.createMessage(channelId, {
         "embed": {
             "title": "Magic 8 Ball :8ball:",
-            "description": sender.mention + ", " + answer.response,
+            "description": sender.mention + ", " + answer,
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
