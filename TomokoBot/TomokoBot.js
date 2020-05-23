@@ -29,6 +29,7 @@ const config = require("./config.json");
 const jokes = require("./assets/jokes.json");
 const catfacts = require("./assets/catfacts.json");
 const rpsData = require("./assets/rps.json");
+const eightBall = require("./assets/eightball.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
 const fetch = require("node-fetch");
@@ -2763,8 +2764,9 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
  *
 **/
 
-/*async function askTheEightBall(sender, channelId, question) {
-    var answer = await neko.sfw.8Ball(question);
+function askTheEightBall(sender, channelId, question) {
+    // var answer = await neko.sfw.8Ball(question);
+    var answer = eightBall.responses[Math.floor(Math.random() * eightBall.responses.length)];
     logger.info(answer);
     bot.createMessage(channelId, {
         "embed": {
@@ -2777,7 +2779,8 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
             },
             "footer": {
                 "icon_url": sender.avatarURL,
-                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
+//                 "text": "(No longer) Powered by: nekos.life, Requested by: " + getUserName(sender)
+                "text": "Requested by: " + getUserName(sender)
             }
         }
     }); // Send a message with the answer as embed.
@@ -2794,7 +2797,7 @@ bot.registerCommand("8ball", (message, args) => { // Command to aks the 8ball so
     "cooldown": 4000,
     "cooldownMessage": messages.cooldown,
     "cooldownReturns": 4
-});*/
+});
 
 async function fact(sender, channelId) {
     var fact = await neko.sfw.fact();
