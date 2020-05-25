@@ -18,11 +18,11 @@
             },
             {
                 "name": ":moneybag: Currency commands",
-                "value": "`balance` `daily` `gamble` `transfer` `leaderboard` `loot`"
+                "value": "`giveaway` `balance` `daily` `gamble` `transfer` `leaderboard` `loot`"
             },
             {
                 "name": ":space_invader: Fun commands",
-                "value": "`8ball (currently doesn't work)` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
+                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
             },
             {
                 "name": ":oncoming_police_car: Moderation commands",
@@ -130,7 +130,11 @@
         "avatar": {
             "usage": "avatar [userMention/uid:UserID]",
             "description": "R-Returns avatar f-for the given user/u-userID.\nIf n-no user/userID is given, y-your own avatar will b-be returned."
+        },
+        "giveaway": {
+            "usage": "giveaway <@role> <durationMinutes> <mentionEveryone>",
+            "description": "S-Starts a g-g-iveaway that l-lasts `durationMinutes` minutes.\nT-The winner w-will receive the m-mentioned role.\nI-If `mentionEveryone` i-is `true`, every member will b-be notified of t-the giveaway"
         }
     },
-    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar"]
+    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway"]
 }
