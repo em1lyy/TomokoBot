@@ -1,0 +1,84 @@
+{
+    "radioStations": [
+        {
+            "keywords": ["jpop", "Jpop", "JPop", "JPOP", "j", "J"],
+            "queueObject": {
+                "url": "https://listen.moe/stream",
+                "ytUrl": "https://listen.moe/",
+                "title": "LISTEN.moe JPop",
+                "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
+                "duration": "JPop"
+            }
+        },
+        {
+            "keywords": ["kpop", "Kpop", "KPop", "KPOP", "k", "K"],
+            "queueObject": {
+                "url": "https://listen.moe/kpop/stream",
+                "ytUrl": "https://listen.moe/kpop",
+                "title": "LISTEN.moe KPop",
+                "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
+                "duration": "KPop"
+            }
+        },
+        {
+            "keywords": ["cdm", "ibiza", "chillout"],
+            "queueObject": {
+                "url": "http://radio4.vip-radios.fm:8020/stream-mp3-Chill_autodj",
+                "ytUrl": "http://www.cdm-chillout.com",
+                "title": "100% Chillout Music from IBIZA",
+                "thumbnail": "https://www.costadelmar-radio.com/wp-content/themes/cdm/images/header-logo.png",
+                "duration": "Chillout Lounge Ambient"
+            }
+        },
+        {
+            "keywords": ["strictlyhouse", "house", "sh", "strictly.house"],
+            "queueObject": {
+                "url": "http://radio.strictly.house:9506/autodj",
+                "ytUrl": "https://strictly.house/",
+                "title": "Strictly House",
+                "thumbnail": "http://new.strictly.house/wp-content/uploads/2019/11/Banner-White-Transparent-e1572640778707.png",
+                "duration": "House, House Music, Soulful House, Deep House, Tech House, Techno"
+            }
+        },
+        {
+            "keywords": ["edm", "club", "clubsounds", "zoneradio", "dance"],
+            "queueObject": {
+                "url": "http://stream01.zoneradio.de:8000/clubsounds_hq",
+                "ytUrl": "https://zoneradio.de/",
+                "title": "ZoneRadio Clubsounds",
+                "thumbnail": "https://zoneradio.de/dist/assets/images/logo.png",
+                "duration": "EDM, Dance, House"
+            }
+        },
+        {
+            "keywords": ["dubstep", "dubstepfm", "ds", "dsfm", "dubstep.fm"],
+            "queueObject": {
+                "url": "http://stream.dubstep.fm/256mp3",
+                "ytUrl": "http://dubstep.fm/",
+                "title": "Dubstep.fm",
+                "thumbnail": "https://d3kle7qwymxpcy.cloudfront.net/images/broadcasts/3f/16/5110/c175.png",
+                "duration": "Dubstep"
+            }
+        },
+        {
+            "keywords": ["dnb", "noisefm", "trance", "electronic"],
+            "queueObject": {
+                "url": "http://noisefm.ru:8000/play_256",
+                "ytUrl": "http://noisefm.ru",
+                "title": "NoiseFM",
+                "thumbnail": "https://noisefm.ru/wp-content/uploads/2014/09/web-logo.png",
+                "duration": "Electronic, Dance, Trance, Dubstep, DnB Drum and Bass"
+            }
+        },
+        {
+            "keywords": ["synthwave", "synth", "nightride", "nightride.fm"],
+            "queueObject": {
+                "url": "https://stream.nightride.fm/nightride.ogg",
+                "ytUrl": "http://nightride.fm",
+                "title": "Nightride.fm",
+                "thumbnail": "https://d3kle7qwymxpcy.cloudfront.net/images/broadcasts/c8/cf/121963/1/c300.png",
+                "duration": "Synthwave"
+            }
+        }
+    ]
+}

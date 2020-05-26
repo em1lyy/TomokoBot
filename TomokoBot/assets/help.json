@@ -85,7 +85,11 @@
         },
         "play": {
             "usage": "play <subcommand> <music>",
-            "description": "A-Add music t-to the queue.\n`play yturl <URL>`: A-Adds the URL `URL` t-to the queue. T-This m-must be a direct Y-YouTube l-link (e.g. youtube.com o-or youtu.be)"
+            "description": "A-Add music t-to the queue.\n`play yturl <URL>`: A-Adds the URL `URL` t-to the queue. T-This m-must be a direct Y-YouTube l-link (e.g. youtube.com o-or youtu.be)\n`play radio <Station>`: P-Plays the s-specified radio s-station. For a l-list of stations, s-see `*liststations`"
+        },
+        "liststations": {
+            "usage": "liststations",
+            "description": "L-Lists all t-the available r-radio stations."
         },
         "pause": {
             "usage": "pause",
@@ -136,5 +140,5 @@
             "description": "S-Starts a g-g-iveaway that l-lasts `durationMinutes` minutes.\nT-The winner w-will receive the m-mentioned role.\nI-If `mentionEveryone` i-is `true`, every member will b-be notified of t-the giveaway"
         }
     },
-    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway"]
+    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "liststations", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway"]
 }

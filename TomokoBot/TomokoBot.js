@@ -30,6 +30,7 @@ const jokes = require("./assets/jokes.json");
 const catfacts = require("./assets/catfacts.json");
 const rpsData = require("./assets/rps.json");
 const eightBall = require("./assets/eightball.json");
+const radio = require("./assets/radio.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
 const fetch = require("node-fetch");
@@ -201,7 +202,7 @@ function subCommandRequired(message, user, command) { // A function to tell the 
     bot.createMessage(message.channel.id, {
         "embed": {
             "title": "Wrong Command Usage!",
-            "description": messages.subcmd.replace("$user", user.mention).replace("$command", command.replace("*", "")),
+            "description": messages.subcmd.replace("$user", user.mention).replace("$command", command).replace("$command", command.replace("*", "")),
             "color": 16684873,
             "thumbnail": {
                 "url": user.avatarURL
@@ -807,7 +808,7 @@ bot.registerCommand("checkvote", (message, args) => { // Check vote on discordbo
 **/
 
 var playCmd = bot.registerCommand("play", (message, args) => { // Command to play audio from YouTube (required subcommand)
-    subCommandRequired(message, message.author, message.content.split(" ")[0]);
+    subCommandRequired(message, message.author, "*play");
 },
 {
     "cooldown": 4000,
@@ -1079,51 +1080,25 @@ playCmd.registerSubcommand("url", (message, args) => {
 playCmd.registerSubcommand("listenmoe", (message, args) => {
     if (args.length === 1) {
         if (musicGuilds.has(message.member.guild.id)) {
+            // NOTE: Radio stations use duration for the genre
             var guild = musicGuilds.get(message.member.guild.id);
-            if (args[0] === "jpop" || args[0] === "Jpop" || args[0] === "JPop" || args[0] === "j" || args[0] === "J" || args[0] === "JPOP") {
-                guild.queue.push({
-                    "url": "https://listen.moe/stream",
-                    "ytUrl": "https://listen.moe",
-                    "title": "LISTEN.moe JPop",
-                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
-                    "duration": "Pretty long I guess"
-                });
-                if (guild.connection.playing) {
-                    guild.connection.stopPlaying();
+            var stationFound = false;
+            for (let station of radio.radioStations) {
+                if (station.keywords.includes(args[0])) {
+                    stationFound = true;
+                    clearTimeout(guild.leaveCountdown);
+                    guild.queue.push(station.queueObject);
+                    if (guild.connection.playing) {
+                        guild.connection.stopPlaying();
+                    }
+                    guild.queue.push(station.queueObject);
+                    guild.connection.play(guild.queue[0].url);
+                    break;
                 }
-                guild.queue = [];
-                guild.queue.push({
-                    "url": "https://listen.moe/stream",
-                    "ytUrl": "https://listen.moe",
-                    "title": "LISTEN.moe JPop",
-                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
-                    "duration": "Pretty long I guess"
-                });
-                guild.connection.play(guild.queue[0].url);
-            } else if (args[0] === "kpop" || args[0] === "Kpop" || args[0] === "KPop" || args[0] === "k" || args[0] === "K" || args[0] === "KPOP") {
-                guild.queue.push({
-                    "url": "https://listen.moe/kpop/stream",
-                    "ytUrl": "https://listen.moe/kpop",
-                    "title": "LISTEN.moe KPop",
-                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
-                    "duration": "Pretty long I guess"
-                });
-                if (guild.connection.playing) {
-                    guild.connection.stopPlaying();
-                }
-                guild.queue = [];
-                guild.queue.push({
-                    "url": "https://listen.moe/kpop/stream",
-                    "ytUrl": "https://listen.moe/kpop",
-                    "title": "LISTEN.moe KPop",
-                    "thumbnail": "https://listen.moe/_nuxt/img/248c1f3.png",
-                    "duration": "Pretty long I guess"
-                });
-                guild.connection.play(guild.queue[0].url);
-            } else {
+            }
+            if (!stationFound) {
                 invalidArgs(message, message.author, message.content.split(" ")[0]);
             }
-            clearTimeout(guild.leaveCountdown);
             bot.createMessage(message.channel.id, {
                                     "embed": {
                                         "title": "Tomoko's Music Player",
@@ -1169,6 +1144,75 @@ playCmd.registerSubcommandAlias("radio", "listenmoe");
 playCmd.registerSubcommandAlias("listen", "listenmoe");
 playCmd.registerSubcommandAlias("lmoe", "listenmoe");
 playCmd.registerSubcommandAlias("listen.moe", "listenmoe");
+
+bot.registerCommand("liststations", (message, args) => {
+    if (args.length === 0) {
+        var stationList = "";
+        var i = 1;
+        for (let station of radio.radioStations) {
+            stationList += (i) + ". [" + station.queueObject.title + "](" + station.queueObject.ytUrl + ") (Keywords: `" + station.keywords.join(", ") + "`, Genre(s): " + station.queueObject.duration + ")\n";;
+            i++;
+        }
+        if (stationList.length >= 1920) {
+            var msgCount = Math.ceil(queue.length / 1920);
+            var messages = [];
+            let j = 0;
+            for (let g = 0; g < msgCount - 1; g++, j+= 1920) {
+                bot.createMessage(message.channel.id, {
+                                            "embed": {
+                                                "title": "Tomoko's Music Player: Radio Stations",
+                                                "description": "Radio Stations (Page " + (g+1) + " of " + msgCount + ")\n" + stationList.substr(j, 1920),
+                                                "color": 16684873,
+                                                "thumbnail": {
+                                                    "url": bot.user.avatarURL
+                                                },
+                                                "author": {
+                                                    "name": "Tomoko Bot",
+                                                    "icon_url": bot.user.avatarURL
+                                                }
+                                            }
+                                        });
+            }
+            bot.createMessage(message.channel.id, {
+                                            "embed": {
+                                                "title": "Tomoko's Music Player: Radio Stations",
+                                                "description": "Radio Stations (Page " + msgCount + " of " + msgCount + "):\n" + stationList.substr(j),
+                                                "color": 16684873,
+                                                "thumbnail": {
+                                                    "url": bot.user.avatarURL
+                                                },
+                                                "author": {
+                                                    "name": "Tomoko Bot",
+                                                    "icon_url": bot.user.avatarURL
+                                                }
+                                            }
+                                        });
+
+        } else {
+            bot.createMessage(message.channel.id, {
+                                            "embed": {
+                                                "title": "Tomoko's Music Player: Radio Stations",
+                                                "description": "Radio Stations:\n" + stationList,
+                                                "color": 16684873,
+                                                "thumbnail": {
+                                                    "url": bot.user.avatarURL
+                                                },
+                                                "author": {
+                                                    "name": "Tomoko Bot",
+                                                    "icon_url": bot.user.avatarURL
+                                                }
+                                            }
+                                        });
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
 
 bot.registerCommand("pause", (message, args) => { // Command to pause/resume
     if (args.length === 0) {
