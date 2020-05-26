@@ -3409,7 +3409,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
         ctx.closePath();
         ctx.clip();
 
-        const avatar = Canvas.loadImage(member.avatarURL).then((avatar) => {
+        Canvas.loadImage(member.avatarURL).then((avatar) => {
             ctx.drawImage(avatar, 25, 25, 200, 200);
 
             const attachment = { file: canvas.toBuffer(), name: "welcome-image.png" };
@@ -3505,12 +3505,12 @@ bot.on("guildDelete", (guild) => { // On a lost guild
 bot.on("messageCreate", (message) => { // When a message is created
     // First off, if the message mentions me,
     // send a random mention message
-    if (message.content === bot.user.mention) {
+    if (message.content === bot.user.mention || message.content === bot.user.mention + " ") {
         var mentionMsgId = Math.floor(Math.random() * messages.mention.length); // Generate a random number
         bot.createMessage(message.channel.id, messages.mention[mentionMsgId].replace("$user", message.author.mention)); // Send a random mention message
-    } else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
+    }/* else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
         chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
-    }
+    } */
 });
 
 // Get the bot to connect to Discord
