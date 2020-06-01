@@ -605,7 +605,7 @@ bot.registerCommand("help", (message, args) => { // Help command
                                                     },
                                                     "footer": {
                                                         "icon_url": message.author.avatarURL,
-                                                        "text": "78 commands, Requested by: " + getUserName(message.member)
+                                                        "text": "75 commands, Requested by: " + getUserName(message.member)
                                                     },
                                                     "fields": help.help.fields
                                                 }
@@ -1091,6 +1091,7 @@ playCmd.registerSubcommand("listenmoe", (message, args) => {
                     if (guild.connection.playing) {
                         guild.connection.stopPlaying();
                     }
+                    guild.queue = [];
                     guild.queue.push(station.queueObject);
                     guild.connection.play(guild.queue[0].url);
                     break;
@@ -2398,7 +2399,7 @@ async function smug(sender, channelId) {
     logger.info(smug);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "You can be proud of yourself :trophy:",
+            "title": "ー(￣～￣)ξ :trophy:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
@@ -2801,14 +2802,6 @@ bot.registerCommand("kemonomimi", (message, args) => { // Kemonomimi Command
  *
 **/
 
-
-
-/**
- *
- * FUN COMMANDS
- *
-**/
-
 bot.registerCommand("giveaway", (message, args) => {
     if (args.length === 3) {
         if (message.member.permission.has("administrator")) {
@@ -2897,6 +2890,71 @@ bot.registerCommand("giveaway", (message, args) => {
         }
     ],
     "reactionButtonTimeout": 60 * 60 * 1000
+});
+
+/**
+ *
+ * FUN COMMANDS
+ *
+**/
+
+async function generateSpoilerSpam(sender, channelId, text) {
+    var spoiler = await neko.sfw.spoiler({text: text});
+    bot.createMessage(channelId, {
+        "embed": {
+            "title": "Spoiler Spam :black_large_square:",
+            "description": ":inbox_tray: Input:\n" + text + "\n:outbox_tray: Output:\n" + spoiler.owo,
+            "color": 16684873,
+            "author": {
+                "name": "Tomoko Bot",
+                "icon_url": bot.user.avatarURL
+            },
+            "footer": {
+                "icon_url": sender.avatarURL,
+                "text": "Powered by: nekos.life, Requested by: " + getUserName(sender)
+            }
+        }
+    }); // Send a message with the spoiler spam as embed.
+}
+
+bot.registerCommand("spoiler", (message, args) => { // Command to get a random fact
+    if (args.length >= 1) {
+        generateSpoilerSpam(message.member, message.channel.id, args.join(' '));
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
+
+bot.registerCommand("clap", (message, args) => {
+    if (args.length >= 1) {
+        var clappp = "";
+        for (arg of args) {
+            clappp += ":clap:" + arg;
+        }
+        clappp += ":clap:";
+        bot.createMessage(message.channel.id, {
+            "embed": {
+                "title": ":clap:Tomoko's:clap:Clap:clap:Spam:clap: :clap:",
+                "description": ":inbox_tray: Input:\n" + args.join(" ") + "\n:outbox_tray: Output:\n" + clappp,
+                "color": 16684873,
+                "author": {
+                    "name": "Tomoko Bot",
+                    "icon_url": bot.user.avatarURL
+                },
+                "footer": {
+                    "icon_url": message.member.avatarURL,
+                    "text": "Requested by: " + getUserName(message.member)
+                }
+            }
+        }); // Send a message with the clap spam as embed.
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
 });
 
 function askTheEightBall(sender, channelId, question) {

@@ -10,7 +10,7 @@
             },
             {
                 "name": ":musical_note: Music commands",
-                "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume`"
+                "value": "`play` `pause` `stop` `skip` `forceskip` `join` `queue` `repeat` `restartsong` `shuffle` `volume` `liststations`"
             },
             {
                 "name": ":speech_balloon: Action commands",
@@ -22,11 +22,11 @@
             },
             {
                 "name": ":space_invader: Fun commands",
-                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke`"
+                "value": "`8ball` `fact` `catfact` `coinflip` `rolldice` `why` `owoify` `lovemeter` `marry` `divorce` `anime` `manga`  `character` `rps` `joke` `clap` `spoiler`"
             },
             {
                 "name": ":oncoming_police_car: Moderation commands",
-                "value": "`kick` `ban` `unban` `prune` `prunemsg` `mute` `unmute`"
+                "value": "`kick` `ban` `unban` `prune` `prunemsg` `mute` `unmute` `autorole` `xpconfig` `serverctl`"
             },
             {
                 "name": ":tools: Utility commands",
@@ -131,6 +131,74 @@
             "usage": "volume <vol>",
             "description": "Sets t-the volume.\n`vol` s-should be a n-number, e.g. `0.5`, `1.0`, `1.2`..."
         },
+        "pat": {
+            "usage": "pat <userMention>",
+            "description": "S-Sends a pat image t-to the specified u-user."
+        },
+        "hug": {
+            "usage": "hug <userMention>",
+            "description": "S-Sends a hug image t-to the specified u-user."
+        },
+        "kiss": {
+            "usage": "kiss <userMention>",
+            "description": "S-Sends a kiss image t-to the specified u-user."
+        },
+        "slap": {
+            "usage": "slap <userMention>",
+            "description": "S-Sends a slap image t-to the specified u-user."
+        },
+        "tickle": {
+            "usage": "tickle <userMention>",
+            "description": "S-Sends a tickle image t-to the specified u-user."
+        },
+        "cuddle": {
+            "usage": "cuddle <userMention>",
+            "description": "S-Sends a cuddle image t-to the specified u-user."
+        },
+        "meow": {
+            "usage": "meow",
+            "description": "S-Sends a meow image."
+        },
+        "poke": {
+            "usage": "poke <userMention>",
+            "description": "S-Sends a poke image t-to the specified u-user."
+        },
+        "smug": {
+            "usage": "smug",
+            "description": "S-Sends a smug image."
+        },
+        "baka": {
+            "usage": "baka",
+            "description": "S-Sends a baka image."
+        },
+        "feed": {
+            "usage": "feed <userMention>",
+            "description": "S-Sends a feed image t-to the specified u-user."
+        },
+        "neko": {
+            "usage": "neko",
+            "description": "S-Sends a neko image."
+        },
+        "nekogif": {
+            "usage": "nekogif",
+            "description": "S-Sends a nekogif image."
+        },
+        "foxgirl": {
+            "usage": "foxgirl",
+            "description": "S-Sends a foxgirl image."
+        },
+        "kemonomimi": {
+            "usage": "kemonomimi",
+            "description": "S-Sends a kemonomimi image."
+        },
+        "clap": {
+            "usage": "clap <text>",
+            "description": "A-Adds a :clap: between e-every word o-of `text`."
+        },
+        "spoiler": {
+            "usage": "spoiler <text>",
+            "description": "Creates an i-individual spoiler f-for every letter o-of `text`."
+        },
         "avatar": {
             "usage": "avatar [userMention/uid:UserID]",
             "description": "R-Returns avatar f-for the given user/u-userID.\nIf n-no user/userID is given, y-your own avatar will b-be returned."
@@ -140,5 +208,5 @@
             "description": "S-Starts a g-g-iveaway that l-lasts `durationMinutes` minutes.\nT-The winner w-will receive the m-mentioned role.\nI-If `mentionEveryone` i-is `true`, every member will b-be notified of t-the giveaway"
         }
     },
-    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "liststations", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway"]
+    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "liststations", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway", "pat", "hug", "kiss", "slap", "tickle", "cuddle", "meow", "poke", "smug", "baka", "feed", "neko", "nekogif", "foxgirl", "kemonomimi", "clap", "spoiler"]
 }
