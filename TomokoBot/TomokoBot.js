@@ -258,7 +258,7 @@ function refreshUptime() { // A function to refresh the uptime variables
 function weebShHint(user, channelId, command) {
     bot.createMessage(channelId, {
         "embed": {
-            "title": "Not Aviable Yet!",
+            "title": "Not Available Yet!",
             "description": messages.weebShHint.replace("$user", user.mention).replace("$command", command),
             "color": 16684873,
             "thumbnail": {
@@ -614,7 +614,7 @@ bot.registerCommand("help", (message, args) => { // Help command
         if (!(help.commandsWithHelp.includes(args[0]))) {
             bot.createMessage(message.channel.id, {
                                             "embed": {
-                                                "title": "No Help Aviable!",
+                                                "title": "No Help Available!",
                                                 "description": "No h-help for command `" + args[0] + "` f-found!",
                                                 "color": 16684873,
                                                 "author": {
@@ -629,7 +629,7 @@ bot.registerCommand("help", (message, args) => { // Help command
                                                     "text": "Requested by: " + getUserName(message.member)
                                                 }
                                             }
-                                           }); // Send a "no help aviable" message.
+                                           }); // Send a "no help available" message.
             return;
         }
         bot.createMessage(message.channel.id, {
