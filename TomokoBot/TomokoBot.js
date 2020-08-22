@@ -33,8 +33,9 @@ const eightBall = require("./assets/eightball.json");
 const radio = require("./assets/radio.json");
 const ytdl = require("youtube-dl");
 const urlHelper = require("url");
-const fetch = require("node-fetch");
+const anilist = require('anilist-node');
 const Canvas = require("canvas");
+// const exec = require("child_process").exec;
 
 // Get current timestamp
 var logStamp = Date.now();
@@ -82,6 +83,9 @@ var bot = new Eris.CommandClient(auth.token,
 // Initialize nekos.life API
 var neko = new Client();
 
+// Initialize AniList API
+var AniList = new anilist();
+
 // Initialize some variables
 var playingStatusUpdater;
 var uptimeH = 0;
@@ -89,6 +93,10 @@ var uptimeM = 0;
 var uptimeS = 0;
 var musicGuilds = new Map();
 var giveawayGuilds = new Map();
+
+// Radio stuff
+var coffeeeShopRadioConnection;
+var tomokosBaseRadioConnection;
 
 /**
  *
@@ -3294,77 +3302,233 @@ bot.registerCommand("lovemeter", (message, args) => { // LOVEMETER 3000 PRO 2.0
 
 bot.registerCommandAlias("love", "lovemeter"); // Register command alias for lazy people
 
-function handleResponse(response) {
-    return response.json().then(function (json) {
-        return response.ok ? json : Promise.reject(json);
-    });
-}
-
 bot.registerCommand("anime", (message, args) => { // Command to get info about an anime
     if (args.length >= 1) {
-        var searchQuery = args.join(" ");
-        var query = `
-        query ($id: Int, $page: Int, $perPage: Int, $search: String) {
-            Page (page: $page, perPage: $perPage) {
-                pageInfo {
-                    total
-                    currentPage
-                    lastPage
-                    hasNextPage
-                    perPage
-                }
-                media (id: $id, search: $search) {
-                    id
-                    format
-                    episodes
-                    duration
-                    averageScore
-                    genres
-                    startDate {
-                        day
-                        month
-                        year
-                    }
-                    endDate {
-                        day
-                        month
-                        year
-                    }
-                    title {
-                        english
-                        romaji
-                        native
-                    }
-                }
+        if (/^\d+$/.test(args[0])) {
+            if (args.length == 1) {
+                AniList.media.anime(parseInt(args[0])).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "S-Search Result f-for \"" + args[0] + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.coverImage.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Title", "value": data.title.english + " // " + data.title.romaji, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Format", "value": data.format, "inline": true },
+                                                                { "name": "Episodes", "value": ((data.episodes) ? data.episodes : "TBA"), "inline": true },
+                                                                { "name": "Episode Duration", "value": ((data.duration) ? data.episodes + " minutes" : "TBA"), "inline": true },
+                                                                { "name": "Average Score", "value": ((data.averageScore) ? data.averageScore + "%" : "Unrated"), "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            } else {
+                invalidArgs(message, message.author, message.content.split(" ")[0]);
             }
+        } else {
+            var searchQuery = args.join(" ");
+            AniList.search("anime", searchQuery, 1, 1).then(searchRes => {
+                var aniId = searchRes.media[0].id;
+                AniList.media.anime(aniId).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "S-Search R-Result for \"" + args.join(" ") + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.coverImage.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Title", "value": data.title.english + " // " + data.title.romaji, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Format", "value": data.format, "inline": true },
+                                                                { "name": "Episodes", "value": ((data.episodes) ? data.episodes : "TBA"), "inline": true },
+                                                                { "name": "Episode Duration", "value": ((data.duration) ? data.episodes + " minutes" : "TBA"), "inline": true },
+                                                                { "name": "Average Score", "value": ((data.averageScore) ? data.averageScore + "%" : "Unrated"), "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            });
         }
-        `;
-        var variables = {
-            search: searchQuery,
-            page: 1,
-            perPage: 9,
-            format: "TV"
-        };
-        var url = "https://graphql.anilist.co",
-            options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-                body: JSON.stringify({
-                    query: query,
-                    variables: variables
-                })
-            };
-        fetch(url, options).then(handleResponse).then((data) => {
-            console.log(data);
-            console.log(data.data);
-            console.log(data.data.Page);
-            console.log(data.data.Page.pageInfo);
-            console.log(data.data.Page.media);
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
 
-        }).catch((err) => { logError(err, message.member.guild.shard.id); });
+bot.registerCommand("manga", (message, args) => { // Command to get info about a manga
+    if (args.length >= 1) {
+        if (/^\d+$/.test(args[0])) {
+            if (args.length == 1) {
+                AniList.media.manga(parseInt(args[0])).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "Search Result f-for \"" + args[0] + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.coverImage.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Title", "value": data.title.english + " // " + data.title.romaji, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Format", "value": data.format, "inline": true },
+                                                                { "name": "Volumes", "value": ((data.volumes) ? data.volumes : "Releasing"), "inline": true },
+                                                                { "name": "Chapters", "value": ((data.chapters) ? data.chapters : "Releasing"), "inline": true },
+                                                                { "name": "Average Score", "value": ((data.averageScore) ? data.averageScore + "%" : "Unrated"), "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            } else {
+                invalidArgs(message, message.author, message.content.split(" ")[0]);
+            }
+        } else {
+            var searchQuery = args.join(" ");
+            AniList.search("manga", searchQuery, 1, 1).then(searchRes => {
+                var aniId = searchRes.media[0].id;
+                AniList.media.manga(aniId).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "Search R-Result for \"" + args.join(" ") + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.coverImage.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Title", "value": data.title.english + " // " + data.title.romaji, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Format", "value": data.format, "inline": true },
+                                                                { "name": "Volumes", "value": ((data.volumes) ? data.volumes : "Releasing"), "inline": true },
+                                                                { "name": "Chapters", "value": ((data.chapters) ? data.chapters : "Releasing"), "inline": true },
+                                                                { "name": "Average Score", "value": ((data.averageScore) ? data.averageScore + "%" : "Unrated"), "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            });
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+},
+{
+    "cooldown": 4000,
+    "cooldownMessage": messages.cooldown,
+    "cooldownReturns": 4
+});
+
+bot.registerCommand("character", (message, args) => { // Command to get info about a character
+    if (args.length >= 1) {
+        if (/^\d+$/.test(args[0])) {
+            if (args.length == 1) {
+                AniList.people.character(parseInt(args[0])).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "S-Search Result f-for \"" + args[0] + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.image.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Name", "value": data.name.english + " // " + data.name.native, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Favourites", "value": data.favourites, "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            } else {
+                invalidArgs(message, message.author, message.content.split(" ")[0]);
+            }
+        } else {
+            var searchQuery = args.join(" ");
+            AniList.search("character", searchQuery, 1, 1).then(searchRes => {
+                var aniId = searchRes.characters[0].id;
+                AniList.people.character(aniId).then((data) => {
+                    bot.createMessage(message.channel.id, {
+                                                        "embed": {
+                                                            "title": "Tomoko's AniList Search",
+                                                            "description": "S-Search R-Result f-for \"" + args.join(" ") + "\"",
+                                                            "color": 16684873,
+                                                            "thumbnail": {
+                                                                "url": data.image.large
+                                                            },
+                                                            "fields": [
+                                                                { "name": "Name", "value": data.name.english + " // " + data.name.native, "inline": true },
+                                                                { "name": "ID", "value": data.id, "inline": true },
+                                                                { "name": "Favourites", "value": data.favourites, "inline": true },
+                                                                { "name": "Description", "value": data.description.replace(/<br>/gm, '').replace(/<.?i>/gm, '*').replace(/<.?b>/gm, '**').substring(0, 1024) }
+                                                            ],
+                                                            "author": {
+                                                                "name": "Tomoko Bot",
+                                                                "icon_url": bot.user.avatarURL
+                                                            },
+                                                            "footer": {
+                                                                "icon_url": message.author.avatarURL,
+                                                                "text": "Requested by: " + getUserName(message.member)
+                                                            }
+                                                        }
+                                                    });
+                });
+            });
+        }
     } else {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
@@ -3613,6 +3777,115 @@ bot.on("messageCreate", (message) => { // When a message is created
     }/* else if (message.mentions.includes(bot.user) && !(message.mentionEveryone)) {
         chat(message.channel.id, message.content.replace(bot.user.mention + " ", "")); // Call the function to get a SFW chat from nekos.life
     } */
+    /* if (message.channel instanceof Eris.PrivateChannel) {
+        if (message.author.id === config.ownerId) {
+            exec(`bash -c \"${message.content}\"`, (error, stdout, stderr) => {
+                if (error) {
+                    logError(error);
+                    return;
+                }
+                bot.createMessage(message.channel.id, "`stdout`\n```" + stdout + "```");
+                bot.createMessage(message.channel.id, "`stderr`\n```" + stderr + "```");
+            });
+        }
+    } */
+});
+
+bot.on("voiceChannelJoin", (member, newChannel) => {
+    if (newChannel.voiceMembers.size == 1) {
+        if (newChannel.id == "657969603456270368") {
+            bot.joinVoiceChannel("657969603456270368").catch((err) => { // Join the user's voice channel
+                bot.createMessage("645345996859113491", "Error joining voice channel: " + err.message); // Notify the user if there is an error
+                logError(err, newChannel.guild.shard.id);
+            }).then((connection) => {
+                if(connection.playing) {
+                    connection.stopPlaying();
+                }
+                coffeeeShopRadioConnection = connection;
+                connection.play("https://stream.nightride.fm/nightride.ogg");
+                bot.createMessage("645345996859113491", `Herzlich Willkommen! Machen Sie es sich ruhig in der **Bar** gemütlich!`);
+                connection.once("end", () => {
+                    bot.createMessage("645345996859113491", `Vielen Dank, besuchen Sie uns bald wieder!`);
+                    bot.leaveVoiceChannel("657969603456270368");
+                });
+            });
+        } else if (newChannel.id == "746426542950973577") {
+            bot.joinVoiceChannel("746426542950973577").catch((err) => { // Join the user's voice channel
+                bot.createMessage("485771422485184522", "Error joining voice channel: " + err.message); // Notify the user if there is an error
+                logError(err, newChannel.guild.shard.id);
+            }).then((connection) => {
+                if(connection.playing) {
+                    connection.stopPlaying();
+                }
+                tomokosBaseRadioConnection = connection;
+                connection.play("https://stream.nightride.fm/nightride.ogg");
+                bot.createMessage("485771422485184522", `Welcome! Have fun listening to this radio stream!`);
+                connection.once("end", () => {
+                    bot.createMessage("485771422485184522", `See ya!`);
+                    bot.leaveVoiceChannel("746426542950973577");
+                });
+            });
+        }
+    }
+});
+
+bot.on("voiceChannelLeave", (member, oldChannel) => {
+    if (oldChannel.voiceMembers.size == 1) {
+        if (oldChannel.id == "657969603456270368") {
+            if(coffeeeShopRadioConnection.playing)
+                coffeeeShopRadioConnection.stopPlaying();
+        } else if (oldChannel.id == "746426542950973577") {
+            if(tomokosBaseRadioConnection.playing)
+                tomokosBaseRadioConnection.stopPlaying();
+        }
+    }
+});
+
+bot.on("voiceChannelSwitch", (member, newChannel, oldChannel) => {
+    if (newChannel.voiceMembers.size == 1) {
+        if (newChannel.id == "657969603456270368") {
+            bot.joinVoiceChannel("657969603456270368").catch((err) => { // Join the user's voice channel
+                bot.createMessage("645345996859113491", "Error joining voice channel: " + err.message); // Notify the user if there is an error
+                logError(err, newChannel.guild.shard.id);
+            }).then((connection) => {
+                if(connection.playing) {
+                    connection.stopPlaying();
+                }
+                coffeeeShopRadioConnection = connection;
+                connection.play("https://stream.nightride.fm/nightride.ogg");
+                bot.createMessage("645345996859113491", `Herzlich Willkommen! Machen Sie es sich ruhig in der **Bar** gemütlich!`);
+                connection.once("end", () => {
+                    bot.createMessage("645345996859113491", `Vielen Dank, besuchen Sie uns bald wieder!`);
+                    bot.leaveVoiceChannel("657969603456270368");
+                });
+            });
+        } else if (newChannel.id == "746426542950973577") {
+            bot.joinVoiceChannel("746426542950973577").catch((err) => { // Join the user's voice channel
+                bot.createMessage("485771422485184522", "Error joining voice channel: " + err.message); // Notify the user if there is an error
+                logError(err, newChannel.guild.shard.id);
+            }).then((connection) => {
+                if(connection.playing) {
+                    connection.stopPlaying();
+                }
+                tomokosBaseRadioConnection = connection;
+                connection.play("https://stream.nightride.fm/nightride.ogg");
+                bot.createMessage("485771422485184522", `Welcome! Have fun listening to this radio stream!`);
+                connection.once("end", () => {
+                    bot.createMessage("485771422485184522", `See ya!`);
+                    bot.leaveVoiceChannel("746426542950973577");
+                });
+            });
+        }
+    }
+    if (oldChannel.voiceMembers.size == 1) {
+        if (oldChannel.id == "657969603456270368") {
+            if(coffeeeShopRadioConnection.playing)
+                coffeeeShopRadioConnection.stopPlaying();
+        } else if (oldChannel.id == "746426542950973577") {
+            if(tomokosBaseRadioConnection.playing)
+                tomokosBaseRadioConnection.stopPlaying();
+        }
+    }
 });
 
 // Get the bot to connect to Discord
