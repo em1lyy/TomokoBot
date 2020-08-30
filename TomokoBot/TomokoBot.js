@@ -3644,7 +3644,7 @@ bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
 });**/
 
 bot.registerCommand("kick", (message, args) => {
-    if (!message.guild)
+    if (!message.channel.guild)
         return "T-This command c-can only be used i-in a guild!";
     if ((args.length === 1 || args.length === 2) && message.mentions.length === 1 && !message.mentionEveryone) {
         if (message.member.permission.has("kickMembers")) {
@@ -3661,7 +3661,7 @@ bot.registerCommand("kick", (message, args) => {
 });
 
 bot.registerCommand("ban", (message, args) => {
-    if (!message.guild)
+    if (!message.channel.guild)
         return "T-This command c-can only be used i-in a guild!";
     if ((args.length >= 1 || args.length <= 3) && message.mentions.length === 1 && !message.mentionEveryone) {
         if (message.member.permission.has("banMembers")) {
