@@ -3643,6 +3643,23 @@ bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
     "cooldownReturns": 4
 });**/
 
+bot.registerCommand("kick", (message, args) => {
+    if (!message.guild)
+        return "T-This command c-can only be used i-in a guild!";
+    if ((args.length === 1 || args.length === 2) && message.mentions.length === 1 && !message.mentionEveryone) {
+        if (message.member.permission.has("kickMembers")) {
+            if (args.length === 1)
+                bot.kickGuildMember(message.guild.id, message.mentions[0].id);
+            else
+                bot.kickGuildMember(message.guild.id, message.mentions[0].id, args[1]);
+        } else {
+            noPermission(message, message.author, message.content.split(" ")[0]);
+        }
+    } else {
+        invalidArgs(message, message.author, message.content.split(" ")[0]);
+    }
+});
+
 bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     logger.info("Join event called!"); // Log "Join event called!",
     logger.info("Guild name: " + guild.name + " (ID: " + guild.id + ")"); // the guild name
