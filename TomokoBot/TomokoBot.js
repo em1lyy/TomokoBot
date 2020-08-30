@@ -3649,9 +3649,9 @@ bot.registerCommand("kick", (message, args) => {
     if ((args.length === 1 || args.length === 2) && message.mentions.length === 1 && !message.mentionEveryone) {
         if (message.member.permission.has("kickMembers")) {
             if (args.length === 1)
-                bot.kickGuildMember(message.guild.id, message.mentions[0].id);
+                bot.kickGuildMember(message.channel.guild.id, message.mentions[0].id);
             else
-                bot.kickGuildMember(message.guild.id, message.mentions[0].id, args[1]);
+                bot.kickGuildMember(message.channel.guild.id, message.mentions[0].id, args[1]);
         } else {
             noPermission(message, message.author, message.content.split(" ")[0]);
         }
@@ -3670,11 +3670,11 @@ bot.registerCommand("ban", (message, args) => {
                     invalidArgs(message, message.author, message.content.split(" ")[0]);
             }
             if (args.length === 1)
-                bot.banGuildMember(message.guild.id, message.mentions[0].id);
+                bot.banGuildMember(message.channel.guild.id, message.mentions[0].id);
             else if (args.length === 2)
-                bot.banGuildMember(message.guild.id, message.mentions[0].id, 0, args[1]);
+                bot.banGuildMember(message.channel.guild.id, message.mentions[0].id, 0, args[1]);
             else
-                bot.banGuildMember(message.guild.id, message.mentions[0].id, parseInt(args[2]), args[1]);
+                bot.banGuildMember(message.channel.guild.id, message.mentions[0].id, parseInt(args[2]), args[1]);
         } else {
             noPermission(message, message.author, message.content.split(" ")[0]);
         }
