@@ -18,30 +18,30 @@
  *
 **/
 
-const Eris = require("eris");
-const winston = require("winston");
-const Client = require("nekos.life");
+global.Eris = require("eris");
+global.winston = require("winston");
+global.Client = require("nekos.life");
 const auth = require("./auth.json");
-const messages = require("./assets/messages.json");
-const help = require("./assets/help.json");
-const pkg = require("./package.json");
-const config = require("./config.json");
-const jokes = require("./assets/jokes.json");
-const catfacts = require("./assets/catfacts.json");
-const rpsData = require("./assets/rps.json");
-const eightBall = require("./assets/eightball.json");
-const radio = require("./assets/radio.json");
-const ytdl = require("youtube-dl");
-const urlHelper = require("url");
-const anilist = require('anilist-node');
-const Canvas = require("canvas");
+global.messages = require("./assets/messages.json");
+global.help = require("./assets/help.json");
+global.pkg = require("./package.json");
+global.config = require("./config.json");
+global.jokes = require("./assets/jokes.json");
+global.catfacts = require("./assets/catfacts.json");
+global.rpsData = require("./assets/rps.json");
+global.eightBall = require("./assets/eightball.json");
+global.radio = require("./assets/radio.json");
+global.ytdl = require("youtube-dl");
+global.urlHelper = require("url");
+global.anilist = require('anilist-node');
+global.Canvas = require("canvas");
 // const exec = require("child_process").exec;
 
 // Get current timestamp
-var logStamp = Date.now();
+global.logStamp = Date.now();
 
 // Configure logger settings
-const logger = winston.createLogger({
+global.logger = winston.createLogger({
   level: "debug",
   format: winston.format.json(),
   transports: [
@@ -63,7 +63,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Initialize Eris object
-var bot = new Eris.CommandClient(auth.token,
+global.bot = new Eris.CommandClient(auth.token,
                           {
                               "defaultImageSize": 512,
                               "autoreconnect": true,
@@ -81,18 +81,19 @@ var bot = new Eris.CommandClient(auth.token,
 );
 
 // Initialize nekos.life API
-var neko = new Client();
+global.neko = new Client();
 
 // Initialize AniList API
-var AniList = new anilist();
+global.AniList = new anilist();
 
 // Initialize some variables
-var playingStatusUpdater;
-var uptimeH = 0;
-var uptimeM = 0;
-var uptimeS = 0;
-var musicGuilds = new Map();
-var giveawayGuilds = new Map();
+global.playingStatusUpdater;
+global.uptimeH = 0;
+global.uptimeM = 0;
+global.uptimeS = 0;
+global.musicGuilds = new Map();
+global.giveawayGuilds = new Map();
+global.registeredCommands = [];
 
 // Radio stuff
 var coffeeeShopRadioConnection;
@@ -133,6 +134,9 @@ function logError(err, shardId) { // Alter error function
     bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + shardId + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 }
 
+global.logInfo = logInfo;
+global.logError = logError;
+
 /**
  * Function to prevent the bot from being interrupted.
  * When Ctrl+C is pressed, it first shuts the bot down and doesn't just destroys it.
@@ -160,6 +164,8 @@ function getUserName(member) {
         return member.nick;
     }
 }
+
+global.getUserName = getUserName;
 
 async function chat(channelId, message) {
     // var chat = await neko.sfw.chat({ text: message });
@@ -189,6 +195,8 @@ function noPermission(message, user, command) { // A function to call whenever a
     }); // Send a "You don't have the permission to perform this action" message.
 }
 
+global.noPermission = noPermission;
+
 function invalidArgs(message, user, command) { // A fuction that tells the user that he used the command incorrectly
     bot.createMessage(message.channel.id, {
         "embed": {
@@ -205,6 +213,8 @@ function invalidArgs(message, user, command) { // A fuction that tells the user 
         }
     }); // Send an "Invalid arguments" message.
 }
+
+global.invalidArgs = invalidArgs;
 
 function subCommandRequired(message, user, command) { // A function to tell the user that they should specify a subcommand
     bot.createMessage(message.channel.id, {
@@ -223,6 +233,8 @@ function subCommandRequired(message, user, command) { // A function to tell the 
     }); // Send an "Subcommand required" message.
 }
 
+global.subCommandRequired = subCommandRequired;
+
 function warnEveryone(message, user, command) { // A function that tells the user not to use @everyone or @here
     bot.createMessage(message.channel.id, {
         "embed": {
@@ -239,6 +251,8 @@ function warnEveryone(message, user, command) { // A function that tells the use
         }
     }); // Send a "Please don't use @everyone/@here" message.
 }
+
+global.warnEveryone = warnEveryone;
 
 // Canvas text thing
 const applyText = (canvas, text, margin) => {
@@ -262,6 +276,8 @@ function refreshUptime() { // A function to refresh the uptime variables
     uptimeM = Math.floor((bot.uptime / 60 / 1000) % 60);
     uptimeS = Math.floor((bot.uptime / 1000) % 60);
 }
+
+global.refreshUptime = refreshUptime;
 
 function weebShHint(user, channelId, command) {
     bot.createMessage(channelId, {
@@ -311,503 +327,7 @@ bot.on("ready", () => {    // When the bot is ready
  *
 **/
 
-bot.registerCommand("reboot", (message, args) => { // Command to reboot Tomoko
-    if (args.length === 0) {
-        if (message.author.id === config.ownerId) {
-            logInfo("Shutting down.");
-            bot.disconnect();
-            clearTimeout(playingStatusUpdater);
-            logger.info("Shut down.");
-            process.exit();
-        } else {
-            noPermission(message, message.author, message.content.split(" ")[0]);
-        }
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 45000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 3
-});
-
-bot.registerCommand("servers", (message, args) => { // Displays every server Tomoko is in.
-    if (args.length === 0) {
-        if (message.author.id === config.ownerId) {
-            logInfo("Servers requested.");
-            var guild = message.member.guild;
-            var servers = "";
-            bot.guilds.forEach((value, key, map) => {
-                servers += value.name + "\n";
-            });
-
-            if (servers.length >= 1920) {
-                var msgCount = Math.ceil(servers.length / 1920);
-                var messages = [];
-                let j = 0;
-                for (let g = 0; g < msgCount - 1; g++, j+= 1920) {
-                    bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": "Tomoko's Servers",
-                                                    "description": "Servers (Page " + (g+1) + " of " + msgCount + ")\n" + servers.substr(j, 1920),
-                                                    "color": 16684873,
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    }
-                                                }
-                                            });
-                }
-                bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": "Tomoko's Servers",
-                                                    "description": "Servers (Page " + msgCount + " of " + msgCount + "):\n" + servers.substr(j),
-                                                    "color": 16684873,
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    }
-                                                }
-                                            });
-
-            } else {
-                bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": "Tomoko's Servers",
-                                                    "description": "Servers:\n" + servers,
-                                                    "color": 16684873,
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    }
-                                                }
-                                            });
-            }
-        } else {
-            noPermission(message, message.author, message.content.split(" ")[0]);
-        }
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 30000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 3
-});
-
-bot.registerCommand("addfriend", (message, args) => { // Command that was initially though to add a friend, but sadly doesn't work
-    if (args.length === 1) {
-        if (message.author.id === config.ownerId) {
-            logInfo("Sending friend request to <@!" + args[0] + "> .");
-            bot.addRelationship(args[0], false);
-        } else {
-            noPermission(message, message.author, message.content.split(" ")[0]);
-        }
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 12000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 3
-});
-
-bot.registerCommand("testperm", (message, args) => { // Command to test the noperm and the invalid args message.
-    if (args.length === 0) {
-        noPermission(message, message.author, message.content.split(" ")[0]);
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 5000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("status", (message, args) => {
-    if (args.length === 0) {
-        refreshUptime(); // Refresh the Uptime variables
-        var guildsInCurrentShard = 0;
-        bot.guilds.forEach((guild) => { // Calcutale guild count for message author's shard
-            if(guild.shard.id === message.member.guild.shard.id) {
-                guildsInCurrentShard++;
-            }
-        });
-        var musicStatus = "**not playing** any music.";
-        if (musicGuilds.has(message.member.guild.id)) {
-            musicStatus = "playing **" + musicGuilds.get(message.member.guild.id).queue[0].title + "**.";
-        }
-        bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": "Tomoko's Status",
-                                                    "description": "O-Oh, you want some i-information about m-my current status?\nO-Okay, h-here you go:",
-                                                    "color": 16684873,
-                                                    "footer": {
-                                                        "icon_url": message.author.avatarURL,
-                                                        "text": "Requested by: " + getUserName(message.member)
-                                                    },
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    },
-                                                    "fields": [
-                                                        {
-                                                            "name": ":clock3: Uptime",
-                                                            "value": "**" + uptimeH + "** hour(s), **" + uptimeM + "** minute(s) and **" + uptimeS + "** second(s)."
-                                                        },
-                                                        {
-                                                            "name": ":desktop: Current Version",
-                                                            "value": "I am currently running **Version " + pkg.version + "**."
-                                                        },
-                                                        {
-                                                            "name": ":earth_africa: Global Analytics",
-                                                            "value": "Guilds: **" + bot.guilds.size + "**\nShards: **" + bot.shards.size + "**\nUsers: **" + bot.users.size + "**",
-                                                            "inline": true
-                                                        },
-                                                        {
-                                                            "name": ":diamond_shape_with_a_dot_inside: This Shard Analytics",
-                                                            "value": "Guilds: **" + guildsInCurrentShard + "**\nShard ID: **" + message.member.guild.shard.id + "**\nUsers: **" + message.member.guild.memberCount + "**",
-                                                            "inline": true
-                                                        },
-                                                        {
-                                                            "name": ":speaker: Music Status",
-                                                            "value": "I am currently " + musicStatus
-                                                        },
-                                                        {
-                                                            "name": ":floppy_disk: RAM Usage",
-                                                            "value": "**" + (Math.round(process.memoryUsage().rss / 1024 /1024)) + "** MB",
-                                                            "inline": true
-                                                        },
-                                                        {
-                                                            "name": ":floppy_disk: Heap Usage",
-                                                            "value": "**" + (Math.round(process.memoryUsage().heapUsed / 1024 / 1024)) + "** MB / **" + (Math.round(process.memoryUsage().heapTotal / 1024 / 1024)) + "** MB",
-                                                            "inline": true
-                                                        },
-                                                        {
-                                                            "name": ":thumbsup: Like me?",
-                                                            "value": "O-Oh, y-you like m-me? M-Me? Oh, i-if you r-really do s-so, y-you can v-vote for me at [Discord Bot List](https://discordbots.org/)."
-                                                        },
-                                                        {
-                                                            "name": ":handshake: Support",
-                                                            "value": "If you need Support, please join [my Discord Server](https://discord.gg/EK9F28B)"
-                                                        }
-                                                    ]
-                                                }
-                                            });
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 5000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("avatar", (message, args) => { // Command to get the avatar of an user
-    if (args.length === 1) {
-        if (message.mentionEveryone) {
-            warnEveryone(message, message.author, message.content.split(" ")[0]);
-            return;
-        }
-        if (message.mentions.length === 1) {
-            bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Avatar for " + message.mentions[0].username + ":",
-                                                "description": "[Avatar URL Link](" + message.mentions[0].avatarURL + ")",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": message.mentions[0].avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + getUserName(message.member)
-                                                }
-                                            }
-                                           }); // Send a message with the avatar as embed.
-        } else if (args[0].startsWith("uid:")) {
-            var userUID = args[0].split("uid:")[1];
-            var userByUID = bot.users.find(user => user.id == userUID);
-            bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Avatar for " + userByUID.username + ":",
-                                                "description": "[Avatar URL Link](" + userByUID.avatarURL + ")",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "image": {
-                                                    "url": userByUID.avatarURL
-                                                },
-                                                "footer": {
-                                                    "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + getUserName(message.member)
-                                                }
-                                            }
-                                           }); // Send a message with the avatar as embed.
-        } else {
-            invalidArgs(message, message.author, message.content.split(" ")[0]);
-            return;
-        }
-    } else {
-        bot.createMessage(message.channel.id, {
-                                        "embed": {
-                                            "title": "Avatar for " + message.author.username + ":",
-                                            "description": "[Avatar URL Link](" + message.author.avatarURL + ")",
-                                            "color": 16684873,
-                                            "author": {
-                                                "name": "Tomoko Bot",
-                                                "icon_url": bot.user.avatarURL
-                                            },
-                                            "image": {
-                                                "url": message.author.avatarURL
-                                            },
-                                            "footer": {
-                                                "icon_url": message.author.avatarURL,
-                                                "text": "Requested by: " + getUserName(message.member)
-                                            }
-                                        }
-                                       }); // Send a message with the avatar as embed.
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("help", (message, args) => { // Help command
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": help.help.title,
-                                                    "description": help.help.description,
-                                                    "color": 16684873,
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    },
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "footer": {
-                                                        "icon_url": message.author.avatarURL,
-                                                        "text": "75 commands, Requested by: " + getUserName(message.member)
-                                                    },
-                                                    "fields": help.help.fields
-                                                }
-        });
-    } else if (args.length === 1) {
-        if (!(help.commandsWithHelp.includes(args[0]))) {
-            bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "No Help Available!",
-                                                "description": "No h-help for command `" + args[0] + "` f-found!",
-                                                "color": 16684873,
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                "footer": {
-                                                    "icon_url": message.author.avatarURL,
-                                                    "text": "Requested by: " + getUserName(message.member)
-                                                }
-                                            }
-                                           }); // Send a "no help available" message.
-            return;
-        }
-        bot.createMessage(message.channel.id, {
-                                                "embed": {
-                                                    "title": help.help.title,
-                                                    "description": "Help for command: `" + args[0] + "`",
-                                                    "color": 16684873,
-                                                    "author": {
-                                                        "name": "Tomoko Bot",
-                                                        "icon_url": bot.user.avatarURL
-                                                    },
-                                                    "thumbnail": {
-                                                        "url": bot.user.avatarURL
-                                                    },
-                                                    "footer": {
-                                                        "icon_url": message.author.avatarURL,
-                                                        "text": "Requested by: " + getUserName(message.member)
-                                                    },
-                                                    "fields": [
-                                                        {
-                                                            "name": ":keyboard: Usage",
-                                                            "value": "`" + help.commands[args[0]].usage + "`"
-                                                        },
-                                                        {
-                                                            "name": ":pencil: Description",
-                                                            "value": help.commands[args[0]].description
-                                                        }
-                                                    ]
-                                                }
-        });
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("invite", (message, args) => { // Send invite for bot
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Tomoko Invite Link",
-                                                "description": messages.invite.replace("$user", message.author.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": message.author.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send the invite for Tomoko
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("aboutme", (message, args) => { // About me command
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Tomoko's Story",
-                                                "description": messages.aboutme_desc.replace("$user", message.author.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": bot.user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                },
-                                                "fields": messages.aboutme_fields
-                                            }
-                                           }); // Send my story
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 8000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 6
-});
-
-bot.registerCommand("support", (message, args) => { // Support Command
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Tomoko's Support",
-                                                "description": messages.support.replace("$user", message.author.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": bot.user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send support thing
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("vote", (message, args) => { // Vote for me :)
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Vote for Tomoko",
-                                                "description": messages.vote.replace("$user", message.author.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": bot.user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send vote message
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
-
-bot.registerCommand("checkvote", (message, args) => { // Check vote on discordbots.org
-    if (args.length === 0) {
-        bot.createMessage(message.channel.id, {
-                                            "embed": {
-                                                "title": "Tomoko's Vote Checker",
-                                                "description": messages.vote.replace("$user", message.author.mention),
-                                                "color": 16684873,
-                                                "thumbnail": {
-                                                    "url": bot.user.avatarURL
-                                                },
-                                                "author": {
-                                                    "name": "Tomoko Bot",
-                                                    "icon_url": bot.user.avatarURL
-                                                }
-                                            }
-                                           }); // Send vote message
-    } else {
-        invalidArgs(message, message.author, message.content.split(" ")[0]);
-    }
-},
-{
-    "cooldown": 4000,
-    "cooldownMessage": messages.cooldown,
-    "cooldownReturns": 4
-});
+// all ported to new command system
 
 /**
  *
@@ -3704,6 +3224,8 @@ bot.registerCommand("prune", (message, args) => {
         invalidArgs(message, message.author, message.content.split(" ")[0]);
     }
 });
+
+require("./commands/reload.js").run(undefined, undefined);
 
 bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
     logger.info("Join event called!"); // Log "Join event called!",
