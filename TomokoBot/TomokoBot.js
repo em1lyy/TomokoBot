@@ -3234,6 +3234,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
 
     const channel = guild.systemChannelID;
     if (!channel) return;
+    if (guild.id === "679795694965489674") return;
 
     const canvas = Canvas.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
@@ -3276,6 +3277,7 @@ bot.on("guildMemberRemove", (guild, member) => { // When an user leaves the serv
 
     const channel = guild.systemChannelID;
     if (!channel) return;
+    if (guild.id === "679795694965489674") return;
 
     const canvas = Canvas.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
