@@ -3169,6 +3169,8 @@ bot.registerCommand("rps", (message, args) => { // Rock-paper-scissors game
  * 
 **/
 
+// everything moved to new command module system
+
 require("./commands/reload.js").run(undefined, undefined);
 
 bot.on("guildMemberAdd", (guild, member) => { // When an user joins the server
