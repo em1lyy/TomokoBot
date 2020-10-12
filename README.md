@@ -6,9 +6,9 @@ Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
 
 ## General Information  
 Written in: `JavaScript`  
-Libraries used: `Eris` `winston` `nekos.life API` `youtube-dl` (*Planned: `Weeb.sh API`*)  
+Libraries used: `Eris` `winston` `nekos.life API` `youtube-dl` `AniList API` (*Planned: `Weeb.sh API`*)  
 Function count: Currently more than 6, lol (I'm too lazy to Count 'em)  
-Latest version: `v0.1.4` (I may update this later, but not now)  
+Latest version: `v0.2.1` (I may update this later, but not now)  
 Developers:  
 * Jonas Jaguar  
 ...yeah, that's it.  
