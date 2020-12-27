@@ -13,7 +13,7 @@ module.exports.run = (message, args) => { // Command to control giveaways
                 return;
             }
             var time = parseInt(args[1], 10);
-            if (time == NaN) {
+            if (isNaN(time)) {
                 invalidArgs(message, message.author, message.content.split(" ")[0]);
                 return;
             }
