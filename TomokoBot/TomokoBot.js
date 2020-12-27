@@ -35,6 +35,7 @@ global.ytdl = require("youtube-dl");
 global.urlHelper = require("url");
 global.anilist = require('anilist-node');
 global.Canvas = require("canvas");
+global.weather = require('openweather-apis');
 // const exec = require("child_process").exec;
 
 // Get current timestamp
@@ -85,6 +86,11 @@ global.neko = new Client();
 
 // Initialize AniList API
 global.AniList = new anilist();
+
+// Initialize OpenWeatherMap API
+weather.setAPPID(auth.owmToken);
+weather.setUnits(config.unitDisplay);
+weather.setLang("en");
 
 // Initialize some variables
 global.playingStatusUpdater;

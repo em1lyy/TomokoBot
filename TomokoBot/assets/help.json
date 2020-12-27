@@ -206,7 +206,11 @@
         "giveaway": {
             "usage": "giveaway <@role> <durationMinutes> <mentionEveryone>",
             "description": "S-Starts a g-g-iveaway that l-lasts `durationMinutes` minutes.\nT-The winner w-will receive the m-mentioned role.\nI-If `mentionEveryone` i-is `true`, every member will b-be notified of t-the giveaway"
+        },
+        "weather": {
+            "usage": "weather <City Name/locid:OpenWeatherMap Location ID>",
+            "description": "R-Returns the current w-weather at the s-specified location."
         }
     },
-    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "liststations", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway", "pat", "hug", "kiss", "slap", "tickle", "cuddle", "meow", "poke", "smug", "baka", "feed", "neko", "nekogif", "foxgirl", "kemonomimi", "clap", "spoiler"]
+    "commandsWithHelp": ["help", "status", "reboot", "invite", "aboutme", "addfriend", "support", "vote", "testperm", "play", "liststations", "pause", "stop", "skip", "forceskip", "join", "queue", "repeat", "restartsong", "shuffle", "volume", "avatar", "giveaway", "pat", "hug", "kiss", "slap", "tickle", "cuddle", "meow", "poke", "smug", "baka", "feed", "neko", "nekogif", "foxgirl", "kemonomimi", "clap", "spoiler", "weather"]
 }

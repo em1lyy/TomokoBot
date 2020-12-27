@@ -6,5 +6,6 @@
     "maxOwnerSongDuration": 3840,
     "shardCount":  3,
     "maxBitRate": "161",
-    "ownerId": "398116585753280534"
+    "ownerId": "398116585753280534",
+    "unitDisplay": "metric"
 }

@@ -1,6 +1,6 @@
 {
     "name": "TomokoBot",
-    "version": "0.2.4",
+    "version": "0.3.2",
     "description": "Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! ",
     "main": "TomokoBot.js",
     "author": "Jonas Jaguar",
@@ -11,6 +11,7 @@
         "eventemitter3": "^4.0.4",
         "nekos.life": "2.0.4",
         "node-fetch": "2.6.1",
+        "openweather-apis": "^4.4.0",
         "winston": "3.2.1",
         "youtube-dl": "^3.0.2",
         "zlib-sync": "^0.1.6"
