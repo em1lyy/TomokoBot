@@ -5,7 +5,10 @@ module.exports.run = (message, args) => {
         if (message.member.permission.has("manageGuild")) {
             if (parseInt(args[0]) == NaN)
                 invalidArgs(message, message.author, message.content.split(" ")[0]);
-            bot.pruneMembers(message.channel.guild.id, parseInt(args[0]), message.author.username);
+            bot.pruneMembers(message.channel.guild.id, {
+                "days": parseInt(args[0]),
+                "reason": message.author.username
+            });
         } else {
             noPermission(message, message.author, message.content.split(" ")[0]);
         }
