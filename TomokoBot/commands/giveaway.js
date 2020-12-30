@@ -1,6 +1,6 @@
 module.exports.run = (message, args) => { // Command to control giveaways
     if (args.length === 3) {
-        if (message.member.permission.has("administrator")) {
+        if (message.member.permissions.has("administrator")) {
             if (giveawayGuilds.has(message.member.guild.id)) {
                 return "E-Error:\nA giveaway i-is already running o-on this s-server.\nP-Please w-wait until the r-running giveaway i-is done.";
             }

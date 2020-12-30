@@ -1,6 +1,6 @@
 module.exports.run = (message, args) => { // Command to skip the current song
     if (args.length === 0) {
-        if (message.member.permission.has("manageChannels")) {
+        if (message.member.permissions.has("manageChannels")) {
             if (musicGuilds.has(message.member.guild.id)) {
                 var guild = musicGuilds.get(message.member.guild.id);
                 if (guild.connection.playing) {

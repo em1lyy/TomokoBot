@@ -2,7 +2,7 @@ module.exports.run = (message, args) => {
     if (!message.channel.guild)
         return "T-This command c-can only be used i-in a guild!";
     if ((args.length === 1 || args.length === 2) && message.mentions.length === 1 && !message.mentionEveryone) {
-        if (message.member.permission.has("kickMembers")) {
+        if (message.member.permissions.has("kickMembers")) {
             if (args.length === 1)
                 bot.kickGuildMember(message.channel.guild.id, message.mentions[0].id);
             else

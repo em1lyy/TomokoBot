@@ -2,7 +2,7 @@ module.exports.run = (message, args) => {
     if (!message.channel.guild)
         return "T-This command c-can only be used i-in a guild!";
     if ((args.length >= 1 || args.length <= 3) && message.mentions.length === 1 && !message.mentionEveryone) {
-        if (message.member.permission.has("banMembers")) {
+        if (message.member.permissions.has("banMembers")) {
             if (args.length === 3) {
                 if (parseInt(args[2]) == NaN)
                     invalidArgs(message, message.author, message.content.split(" ")[0]);
