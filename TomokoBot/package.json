@@ -3,11 +3,11 @@
     "version": "0.3.2",
     "description": "Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more! ",
     "main": "TomokoBot.js",
-    "author": "Jonas Jaguar",
+    "author": "GamerGirlEmily",
     "dependencies": {
         "anilist-node": "^1.4.0",
         "canvas": "2.6.1",
-        "eris": "0.11.0",
+        "eris": "0.12.0",
         "eventemitter3": "^4.0.4",
         "nekos.life": "2.0.4",
         "node-fetch": "2.6.1",

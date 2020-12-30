@@ -70,13 +70,18 @@ global.bot = new Eris.CommandClient(auth.token,
                               "autoreconnect": true,
                               "defaultImageFormat": "jpg",
                               "maxShards": config.shardCount,
-                              "intents": 13955
+                              "intents": 13955,
+                              "allowedMentions": {
+                                  "everyone": false,
+                                  "roles": true,
+                                  "users": true
+                              }
                           },
                           {
                               "defaultHelpCommand": false,
                               "description": "Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!",
                               "name": "Tomoko",
-                              "owner": "Jonas Jaguar",
+                              "owner": "GamerGirlEmily",
                               "prefix": "*"
                           }
 );
