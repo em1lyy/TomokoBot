@@ -10,7 +10,7 @@ Libraries used: `Eris` `winston` `nekos.life API` `youtube-dl` `AniList API` `Op
 Function count: Currently more than 6, lol (I'm too lazy to Count 'em)  
 Latest version: `v0.3.2`  
 Developers:  
-* Jonas Jaguar  
+* GamerGirlEmily  
 ...yeah, that's it.  
 
 ## How to contribute  

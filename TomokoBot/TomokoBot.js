@@ -1,7 +1,7 @@
 /**
  *
  * Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!
- * Copyright (C) 2018-2020 Jonas Jaguar <jonasjaguar@jagudev.net>
+ * Copyright (C) 2018-2021 Emily <elishikawa@jagudev.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,19 +119,19 @@ var tomokosBaseRadioConnection;
 process.on("uncaughtException", (err) => { // When an exception occurs...
     logger.error("Caught exception: " + err.message); // Log exception message...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+    bot.createMessage(config.outputChannelId, ":warning: Emily! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 });
 
 process.on("unhandledRejection", (err, p) => { // When an promise rejection occurs...
     logger.error("Caught exception: " + err.message); // Log exception message...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+    bot.createMessage(config.outputChannelId, ":warning: Emily! Something went wrong here!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 });
 
 bot.on("error", (err, id) => { // When an exception occurs...
     logger.error("Caught exception: " + err.message + " from shard # " + id); // Log exception message and Shard ID...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + id + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+    bot.createMessage(config.outputChannelId, ":warning: Emily! Something went wrong in shard " + id + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 });
 
 function logInfo(message) { // Alter log function
@@ -142,7 +142,7 @@ function logInfo(message) { // Alter log function
 function logError(err, shardId) { // Alter error function
     logger.error("Caught exception: " + err.message + " from shard # " + shardId); // Log exception message and Shard ID...
     logger.info("Stack trace: " + err.stack); // ..and stack trace to console using winston...
-    bot.createMessage(config.outputChannelId, ":warning: Jonas! Something went wrong in shard " + shardId + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
+    bot.createMessage(config.outputChannelId, ":warning: Emily! Something went wrong in shard " + shardId + "!\n:speech_balloon: Message: " + err.message + "\n:information_source: Stack Trace:\n```" + err.stack + "```"); // ...and send a message to my log channel.
 }
 
 global.logInfo = logInfo;
