@@ -48,7 +48,7 @@ module.exports.run = (message, args) => { // Command to get weather in a city
                                                             },
                                                             {
                                                                 "name": ":cloud_rain: Rain Volume (3h)",
-                                                                "value": wReport.rain["3h"] + "mm",
+                                                                "value": (wReport.rain ? wReport.rain["3h"] : "[Unmeasured] ") + "mm",
                                                                 "inline": true
                                                             },
                                                             {
