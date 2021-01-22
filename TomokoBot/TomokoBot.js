@@ -107,7 +107,6 @@ global.giveawayGuilds = new Map();
 global.registeredCommands = [];
 
 // Radio stuff
-var coffeeeShopRadioConnection;
 var tomokosBaseRadioConnection;
 
 /**
@@ -1866,23 +1865,7 @@ bot.on("messageCreate", (message) => { // When a message is created
 
 bot.on("voiceChannelJoin", (member, newChannel) => {
     if (newChannel.voiceMembers.size == 1) {
-        if (newChannel.id == "657969603456270368") {
-            bot.joinVoiceChannel("657969603456270368").catch((err) => { // Join the user's voice channel
-                bot.createMessage("645345996859113491", "Error joining voice channel: " + err.message); // Notify the user if there is an error
-                logError(err, newChannel.guild.shard.id);
-            }).then((connection) => {
-                if(connection.playing) {
-                    connection.stopPlaying();
-                }
-                coffeeeShopRadioConnection = connection;
-                connection.play("https://stream.nightride.fm/nightride.ogg");
-                bot.createMessage("645345996859113491", `Herzlich Willkommen! Machen Sie es sich ruhig in der **Bar** gemütlich!`);
-                connection.once("end", () => {
-                    bot.createMessage("645345996859113491", `Vielen Dank, besuchen Sie uns bald wieder!`);
-                    bot.leaveVoiceChannel("657969603456270368");
-                });
-            });
-        } else if (newChannel.id == "746426542950973577") {
+        if (newChannel.id == "746426542950973577") {
             bot.joinVoiceChannel("746426542950973577").catch((err) => { // Join the user's voice channel
                 bot.createMessage("485771422485184522", "Error joining voice channel: " + err.message); // Notify the user if there is an error
                 logError(err, newChannel.guild.shard.id);
@@ -1904,10 +1887,7 @@ bot.on("voiceChannelJoin", (member, newChannel) => {
 
 bot.on("voiceChannelLeave", (member, oldChannel) => {
     if (oldChannel.voiceMembers.size == 1) {
-        if (oldChannel.id == "657969603456270368") {
-            if(coffeeeShopRadioConnection.playing)
-                coffeeeShopRadioConnection.stopPlaying();
-        } else if (oldChannel.id == "746426542950973577") {
+        if (oldChannel.id == "746426542950973577") {
             if(tomokosBaseRadioConnection.playing)
                 tomokosBaseRadioConnection.stopPlaying();
         }
@@ -1916,23 +1896,7 @@ bot.on("voiceChannelLeave", (member, oldChannel) => {
 
 bot.on("voiceChannelSwitch", (member, newChannel, oldChannel) => {
     if (newChannel.voiceMembers.size == 1) {
-        if (newChannel.id == "657969603456270368") {
-            bot.joinVoiceChannel("657969603456270368").catch((err) => { // Join the user's voice channel
-                bot.createMessage("645345996859113491", "Error joining voice channel: " + err.message); // Notify the user if there is an error
-                logError(err, newChannel.guild.shard.id);
-            }).then((connection) => {
-                if(connection.playing) {
-                    connection.stopPlaying();
-                }
-                coffeeeShopRadioConnection = connection;
-                connection.play("https://stream.nightride.fm/nightride.ogg");
-                bot.createMessage("645345996859113491", `Herzlich Willkommen! Machen Sie es sich ruhig in der **Bar** gemütlich!`);
-                connection.once("end", () => {
-                    bot.createMessage("645345996859113491", `Vielen Dank, besuchen Sie uns bald wieder!`);
-                    bot.leaveVoiceChannel("657969603456270368");
-                });
-            });
-        } else if (newChannel.id == "746426542950973577") {
+        if (newChannel.id == "746426542950973577") {
             bot.joinVoiceChannel("746426542950973577").catch((err) => { // Join the user's voice channel
                 bot.createMessage("485771422485184522", "Error joining voice channel: " + err.message); // Notify the user if there is an error
                 logError(err, newChannel.guild.shard.id);
@@ -1951,10 +1915,7 @@ bot.on("voiceChannelSwitch", (member, newChannel, oldChannel) => {
         }
     }
     if (oldChannel.voiceMembers.size == 1) {
-        if (oldChannel.id == "657969603456270368") {
-            if(coffeeeShopRadioConnection.playing)
-                coffeeeShopRadioConnection.stopPlaying();
-        } else if (oldChannel.id == "746426542950973577") {
+        if (oldChannel.id == "746426542950973577") {
             if(tomokosBaseRadioConnection.playing)
                 tomokosBaseRadioConnection.stopPlaying();
         }
