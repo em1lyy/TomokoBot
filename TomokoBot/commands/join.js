@@ -21,7 +21,7 @@ module.exports.run = (message, args) => { // Makes Tomoko join the current vc
             bot.createMessage(message.channel.id, {
                                             "embed": {
                                                 "title": "Tomoko's Music Player",
-                                                "description": "Y-You need to be i-in a voice channel t-to run this c-command!",
+                                                "description": "Y-You need to be i-in a voice channel t-to run this c-command!\nIf you a-are in a voice c-channel, try r-rejoining.",
                                                 "color": 16684873,
                                                 "thumbnail": {
                                                     "url": bot.user.avatarURL
