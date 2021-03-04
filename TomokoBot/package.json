@@ -5,16 +5,16 @@
     "main": "TomokoBot.js",
     "author": "GamerGirlEmily",
     "dependencies": {
-        "anilist-node": "^1.4.0",
+        "anilist-node": "^1.7.0",
         "canvas": "2.6.1",
         "eris": "0.14.0",
-        "eventemitter3": "^4.0.4",
+        "eventemitter3": "^4.0.7",
         "nekos.life": "2.0.4",
         "node-fetch": "2.6.1",
-        "openweather-apis": "^4.4.0",
+        "openweather-apis": "^4.4.1",
         "winston": "3.2.1",
-        "youtube-dl": "^3.1.0",
-        "zlib-sync": "^0.1.6"
+        "youtube-dl": "^3.5.0",
+        "zlib-sync": "^0.1.7"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.1"
