@@ -1,6 +1,6 @@
 # TomokoBot
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9181572771414bb885c7b5f370a4f019)](https://app.codacy.com/app/jonasjaguar/TomokoBot?utm_source=github.com&utm_medium=referral&utm_content=jonasjaguar/TomokoBot&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9181572771414bb885c7b5f370a4f019)](https://app.codacy.com/app/em1lyy/TomokoBot)
 
 Hi! I am Tomoko, a Discord Bot for moderation, fun, levels, music and much more!  
 
