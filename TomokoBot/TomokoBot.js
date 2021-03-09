@@ -317,7 +317,7 @@ bot.on("ready", () => {    // When the bot is ready
     bot.editStatus("online", { // Set status
         "name":"*help | " + playMsg,
         "type":0,
-        "url":"https://github.com/jonasjaguar/TomokoBot"
+        "url":"https://github.com/em1lyy/TomokoBot"
     });
     playingStatusUpdater = setInterval(function() { // Change status every minute
         var playMsgId = Math.floor(Math.random() * messages.playing.length); // Generate a random number
@@ -325,7 +325,7 @@ bot.on("ready", () => {    // When the bot is ready
         bot.editStatus("online", { // Set status
             "name":"*help | " + playMsg,
             "type":0,
-            "url":"https://github.com/jonasjaguar/TomokoBot"
+            "url":"https://github.com/em1lyy/TomokoBot"
         });
     }, 60000);
     logInfo("Everything set up! I'm now up and running!");
