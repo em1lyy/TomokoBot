@@ -1112,7 +1112,7 @@ async function feed(sender, target, channelId) {
     logger.info(feed);
     bot.createMessage(channelId, {
         "embed": {
-            "title": "**" + target + "** you have been feeded by **" + getUserName(sender) + "** :fork_and_knife:",
+            "title": "**" + target + "** you have been fed by **" + getUserName(sender) + "** :fork_and_knife:",
             "color": 16684873,
             "author": {
                 "name": "Tomoko Bot",
