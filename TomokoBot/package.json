@@ -10,7 +10,7 @@
         "eris": "0.14.0",
         "eventemitter3": "^4.0.7",
         "nekos.life": "2.0.4",
-        "node-fetch": "3.1.1",
+        "node-fetch": "3.2.10",
         "openweather-apis": "^4.4.1",
         "winston": "3.2.1",
         "youtube-dl": "^3.5.0",
